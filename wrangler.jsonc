@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "premiumdigital-store",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-11-14",
+  "workers_dev": true,
+  "vars": {
+    "BOT_USERNAME": "JktStarsStores_bot"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "premiumdigital-db",
+      "database_id": "82f2de50-d258-44ba-b542-9c2bc65b9c24"
+    }
+  ]
+}
