@@ -17,7 +17,7 @@ The public catalog contains only the `Streaming` and `Musik` categories. Product
 
 ## Source of truth
 
-`worker.mjs` and `product-assets.js` were exported from the active production Worker version 36 on 2026-11-16. The asset module contains the SVG catalog artwork used by the Worker.
+`worker.mjs` is synchronized with production Worker version 37. `product-assets.js` retains the existing SVG artwork for the registered products, including inactive products preserved for historical order references.
 
 This repository does not contain live Telegram credentials. Configure secrets in the Cloudflare Worker environment.
 
