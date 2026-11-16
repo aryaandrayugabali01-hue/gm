@@ -196,11 +196,11 @@ async function processWebhookUpdate(update, env, origin) {
       if (!origin) throw new Error("WEBHOOK_ORIGIN_UNAVAILABLE");
       await tg(env, "sendMessage", {
         chat_id: msg.chat.id,
-        text: "✨ JKT STARS STORES\n\nKatalog 47 produk digital aktif. Pembayaran menggunakan Telegram Stars (XTR).\n\nPilih BUKA KATALOG untuk melihat gambar, detail, dan harga produk. Setelah pembayaran terkonfirmasi, pesanan diperiksa admin dan akses dikirim secara manual.",
-        reply_markup: { inline_keyboard: [[{ text: "🏪 BUKA KATALOG · 47 PRODUK", web_app: { url: origin } }], [{ text: "⭐ INFO PEMBAYARAN", callback_data: "payment_info" }, { text: "📜 SYARAT & KETENTUAN", callback_data: "terms" }], [{ text: "🆘 BANTUAN PESANAN", callback_data: "support" }]] }
+        text: "✨ JKT STARS STORES\n\nKatalog khusus layanan Streaming dan Musik. Pembayaran menggunakan Telegram Stars (XTR).\n\nPilih BUKA KATALOG untuk melihat gambar, detail, dan harga produk. Setelah pembayaran terkonfirmasi, pesanan diperiksa admin dan akses dikirim secara manual.",
+        reply_markup: { inline_keyboard: [[{ text: "🏪 BUKA KATALOG", web_app: { url: origin } }], [{ text: "⭐ INFO PEMBAYARAN", callback_data: "payment_info" }, { text: "📜 SYARAT & KETENTUAN", callback_data: "terms" }], [{ text: "🆘 BANTUAN PESANAN", callback_data: "support" }]] }
       });
     } else if (command === "/stars") {
-      const catalog = await env.DB.prepare("SELECT name,period_label,price_stars,is_active FROM products ORDER BY name").all();
+      const catalog = await env.DB.prepare("SELECT name,period_label,price_stars,is_active FROM products WHERE is_active=1 AND delivery_mode='manual' ORDER BY name").all();
       const rows = catalog.results || [];
       const active = rows.filter(p => Number(p.is_active) === 1);
       const listing = rows.map(p => "• " + p.name + " (" + p.period_label + "): " + p.price_stars + " Stars" + (Number(p.is_active) === 1 ? " — tersedia" : " — belum tersedia")).join("\n");
@@ -214,7 +214,7 @@ async function processWebhookUpdate(update, env, origin) {
       await tg(env, "sendMessage", { chat_id: msg.chat.id, text: "Bantuan PremiumDigital_ID\n\nKirim pesan dengan format:\nOrder ID: (nomor pesanan)\nKendala: (jelaskan kendala)\n\nTim akan memeriksa tiket Anda." });
     } else if (isAdminPrivate && command === "/simulasi_buat") {
       const productKey = text.trim().split(/\s+/)[1] || "";
-      const product = await env.DB.prepare("SELECT * FROM products WHERE (id=? OR slug=?) AND delivery_mode='manual'").bind(productKey,productKey).first();
+      const product = await env.DB.prepare("SELECT * FROM products WHERE (id=? OR slug=?) AND is_active=1 AND delivery_mode='manual'").bind(productKey,productKey).first();
       if (!product) {
         await tg(env, "sendMessage", { chat_id: msg.chat.id, text: "Produk simulasi tidak ditemukan. Gunakan salah satu: prod_netflix, prod_spotify, prod_youtube, prod_disney, prod_canva.\nContoh: /simulasi_buat prod_netflix" });
       } else {
@@ -581,7 +581,7 @@ function openProductDetail(productId){
  var buy=document.getElementById('productDetailBuy');if(buy)buy.addEventListener('click',function(){closeProductDetail();checkout(product.id);});
 }
 function closeProductDetail(){var modal=document.getElementById('productModal');if(!modal)return;modal.classList.remove('is-open');modal.setAttribute('aria-hidden','true');document.body.classList.remove('modal-open');}
-function renderProducts(){if(!box)return;if(!catalog.length){if(box&&box.getAttribute('data-ssr')!=='1')box.innerHTML='<article class="card"><div class="desc">Katalog belum tersedia.</div></article>';updateMode();return;}box.removeAttribute('data-ssr');box.innerHTML=catalog.map(function(p){return '<article class="card product-card" role="button" tabindex="0" data-product-id="'+escapeHtml(p.id)+'" aria-label="Lihat detail '+escapeHtml(p.name)+'">'+productArt(p,false)+'<div class="cardtop"><div class="productmeta"><div class="name">'+escapeHtml(p.name)+'</div><div class="period">'+escapeHtml(p.period_label)+'</div></div></div><span class="warranty">'+warrantyLabel(p)+'</span><p class="desc">'+escapeHtml(p.description)+'</p><div class="cardfoot"><div class="price">'+stars(p.price_stars)+'</div><span class="detail-hint">Lihat detail ↗</span></div></article>';}).join('');updateMode();}
+function renderProducts(){if(!box)return;if(!catalog.length){if(box&&box.getAttribute('data-ssr')!=='1')box.innerHTML='<article class="card"><div class="desc">Katalog belum tersedia.</div></article>';updateMode();return;}box.removeAttribute('data-ssr');box.innerHTML=catalog.map(function(p){return '<article class="card product-card" role="button" tabindex="0" data-product-id="'+escapeHtml(p.id)+'" aria-label="Lihat detail '+escapeHtml(p.name)+'">'+productArt(p,false)+'<div class="cardtop"><div class="productmeta"><div class="name">'+escapeHtml(p.name)+'</div><div class="period">'+escapeHtml(p.category)+' · '+escapeHtml(p.period_label)+'</div></div></div><span class="warranty">'+warrantyLabel(p)+'</span><p class="desc">'+escapeHtml(p.description)+'</p><div class="cardfoot"><div class="price">'+stars(p.price_stars)+'</div><span class="detail-hint">Lihat detail ↗</span></div></article>';}).join('');updateMode();}
 if(box){box.addEventListener('click',function(event){var card=event.target.closest('.product-card');if(card&&box.contains(card))openProductDetail(card.getAttribute('data-product-id'));});box.addEventListener('keydown',function(event){var card=event.target.closest('.product-card');if(card&&box.contains(card)&&(event.key==='Enter'||event.key===' ')){event.preventDefault();openProductDetail(card.getAttribute('data-product-id'));}});}
 var closeDetail=document.getElementById('closeProductModal'),detailBackdrop=document.querySelector('[data-close-product]');if(closeDetail)closeDetail.addEventListener('click',closeProductDetail);if(detailBackdrop)detailBackdrop.addEventListener('click',closeProductDetail);document.addEventListener('keydown',function(event){if(event.key==='Escape')closeProductDetail();});
 function loadProducts(){
@@ -660,7 +660,7 @@ function productArtPage(p) {
  if(/^\d{2}-hero\.svg$/.test(asset)) return '<div class="product-art"><img src="/assets/products/'+asset+'" alt="'+escapePageHtml(p.name)+'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover"></div>';
  const id=String(p.id||"").toLowerCase(),name=String(p.name||"").toLowerCase();const kind=id.includes("netflix")||name.includes("netflix")?"netflix":id.includes("spotify")||name.includes("spotify")?"spotify":id.includes("youtube")||name.includes("youtube")?"youtube":id.includes("disney")||name.includes("disney")?"disney":"canva";const brand={netflix:["N","NETFLIX"],spotify:["◉","Spotify"],youtube:["▶","YouTube"],disney:["✦","Disney+"],canva:["C","Canva"]}[kind];return '<div class="product-art art-'+kind+'"><span class="product-art-mark">'+brand[0]+'</span><span class="product-art-word">'+brand[1]+'</span><span class="product-art-tag">PREMIUM DIGITAL ACCESS</span></div>';
 }
-async function renderHomePage(env) { let page=PAGE;try{const result=await env.DB.prepare("SELECT id,name,period_label,description,icon,price_stars,is_active,hero_asset FROM products ORDER BY name").all();const rows=result.results||[];const cards=rows.map(function(p){const description=String(p.description||""),warranty=description.toLowerCase().includes("garansi 30 hari")?"GARANSI 30 HARI":"GARANSI SESUAI KETENTUAN";return '<article class="card product-card" role="button" tabindex="0" data-product-id="'+escapePageHtml(p.id)+'" aria-label="Lihat detail '+escapePageHtml(p.name)+'">'+productArtPage(p)+'<div class="cardtop"><div class="productmeta"><div class="name">'+escapePageHtml(p.name)+'</div><div class="period">'+escapePageHtml(p.period_label)+'</div></div></div><span class="warranty">'+warranty+'</span><p class="desc">'+escapePageHtml(description)+'</p><div class="cardfoot"><div class="price">'+String(Number(p.price_stars)||0)+' XTR</div><span class="detail-hint">Lihat detail ↗</span></div></article>';}).join("");const empty='<article class="card"><div class="desc">Katalog belum tersedia.</div></article>';const target='<section class="grid" id="products"><article class="card"><div class="desc">Memuat katalog...</div></article></section>';page=page.replace(target,'<section class="grid" id="products" data-ssr="1">'+(cards||empty)+'</section>');}catch(error){console.error("homepage_catalog_render_failed",String(error&&error.message||error).slice(0,300));}return html(page);}
+async function renderHomePage(env) { let page=PAGE;try{const result=await env.DB.prepare("SELECT id,name,period_label,description,icon,price_stars,is_active,category,hero_asset FROM products WHERE is_active=1 AND delivery_mode='manual' ORDER BY name").all();const rows=result.results||[];const cards=rows.map(function(p){const description=String(p.description||""),warranty=description.toLowerCase().includes("garansi 30 hari")?"GARANSI 30 HARI":"GARANSI SESUAI KETENTUAN";return '<article class="card product-card" role="button" tabindex="0" data-product-id="'+escapePageHtml(p.id)+'" aria-label="Lihat detail '+escapePageHtml(p.name)+'">'+productArtPage(p)+'<div class="cardtop"><div class="productmeta"><div class="name">'+escapePageHtml(p.name)+'</div><div class="period">'+escapePageHtml(p.category)+' · '+escapePageHtml(p.period_label)+'</div></div></div><span class="warranty">'+warranty+'</span><p class="desc">'+escapePageHtml(description)+'</p><div class="cardfoot"><div class="price">'+String(Number(p.price_stars)||0)+' XTR</div><span class="detail-hint">Lihat detail ↗</span></div></article>';}).join("");const empty='<article class="card"><div class="desc">Katalog belum tersedia.</div></article>';const target='<section class="grid" id="products"><article class="card"><div class="desc">Memuat katalog...</div></article></section>';page=page.replace(target,'<section class="grid" id="products" data-ssr="1">'+(cards||empty)+'</section>');}catch(error){console.error("homepage_catalog_render_failed",String(error&&error.message||error).slice(0,300));}return html(page);}
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -681,7 +681,7 @@ export default {
           await env.DB.prepare("SELECT 1 AS ok").first();
           database = true;
           const counts = await env.DB.prepare("SELECT COUNT(*) AS total, SUM(CASE WHEN is_active=1 AND delivery_mode='manual' THEN 1 ELSE 0 END) AS active FROM products").first();
-          catalogCount = Number(counts && counts.total || 0);
+          catalogCount = Number(counts && counts.active || 0);
           activeProducts = Number(counts && counts.active || 0);
         } catch {}
         let telegram = { connected:false, username:null, usernameMatches:false, webhookConfigured:false, webhookUrlMatches:false, preCheckoutUpdatesEnabled:null, allowedUpdates:null, pendingUpdateCount:null, lastErrorMessage:null };
@@ -725,7 +725,7 @@ export default {
         });
       }
       if (url.pathname === "/api/products" && request.method === "GET") {
-        const rows = await env.DB.prepare("SELECT id,slug,name,period_label,description,icon,price_stars,is_active,catalog_no,hero_asset,benefit_asset FROM products ORDER BY name").all();
+        const rows = await env.DB.prepare("SELECT id,slug,name,period_label,description,icon,price_stars,is_active,catalog_no,category,hero_asset,benefit_asset FROM products WHERE is_active=1 AND delivery_mode='manual' ORDER BY name").all();
         const active = await env.DB.prepare("SELECT COUNT(*) AS total FROM products WHERE is_active=1 AND delivery_mode='manual'").first();
         const hasCatalog = Number(active && active.total || 0) > 0;
         const paymentsReady = hasCatalog && await telegramPaymentsReady(env, url.origin);
