@@ -9,7 +9,11 @@ Source repository for the existing production Cloudflare Worker `premiumdigital-
 - Telegram bot: `@JktStarsStores_bot`
 - Mini App: `https://premiumdigital-store.premiumdigital-id.workers.dev/`
 - Payment currency: Telegram Stars (`XTR`)
-- Catalog: 47 active manual-delivery products, currently 250 XTR each
+- Catalog: 28 active manual-delivery products: 22 Streaming and 6 Musik, currently 250 XTR each
+
+## Catalog scope
+
+The public catalog contains only the `Streaming` and `Musik` categories. Products in other categories are disabled and retained in D1 where needed to preserve historical order references. The storefront, API catalog, and bot catalog listing expose active manual-delivery products only.
 
 ## Source of truth
 
