@@ -620,7 +620,7 @@ body{background:radial-gradient(ellipse at 88% -8%,#3b1769 0,transparent 42%),ra
 <div class="toast" id="toast"></div>
 <script>(function(){
 'use strict';
-var tg=null,initData='',box=document.getElementById('products'),termsAgree=document.getElementById('termsAgree'),orderBox=document.getElementById('orders'),supportInput=document.getElementById('supportMessage'),sendSupport=document.getElementById('sendSupport'),navItems=Array.prototype.slice.call(document.querySelectorAll('.navitem')),catalog=[],paymentsReady=false,checkoutBusy=false,toastTimer=null;
+var tg=null,initData='',box=document.getElementById('products'),featuredBox=document.getElementById('featuredProducts'),termsAgree=document.getElementById('termsAgree'),orderBox=document.getElementById('orders'),supportInput=document.getElementById('supportMessage'),sendSupport=document.getElementById('sendSupport'),navItems=Array.prototype.slice.call(document.querySelectorAll('.navitem')),catalog=[],paymentsReady=false,checkoutBusy=false,toastTimer=null,currentCategory='all';
 var liveInfoItems=['Pembayaran menggunakan Telegram Stars (XTR).','Harga produk ditampilkan sebelum Anda membayar.','Pesanan diproses setelah pembayaran dikonfirmasi Telegram.','Pengiriman akses dilakukan secara manual oleh admin.','Periksa perkembangan transaksi melalui menu Pesanan.'];var liveInfoIndex=0;function rotateLiveInfo(){var text=document.getElementById('liveInfoText'),count=document.getElementById('liveInfoCount');if(text)text.textContent=liveInfoItems[liveInfoIndex];if(count)count.textContent=(liveInfoIndex+1)+' / '+liveInfoItems.length;liveInfoIndex=(liveInfoIndex+1)%liveInfoItems.length;}
 function toast(message){var el=document.getElementById('toast');if(!el)return;el.textContent=message;el.classList.add('show');if(toastTimer)clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('show');},4200);}
 function escapeHtml(value){return String(value==null?'':value).replace(/[&<>]/g,function(c){return c==='&'?'&amp;':c==='<'?'&lt;':'&gt;';}).replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
@@ -628,13 +628,17 @@ function stars(value){var n=Number(value);return Number.isFinite(n)&&n>0?String(
 function warrantyLabel(product){var d=String(product.description||'').toLowerCase();return d.indexOf('garansi 30 hari')!==-1?'GARANSI 30 HARI':'GARANSI SESUAI KETENTUAN';}
 function statusLabel(status){var labels={PENDING_PAYMENT:'Menunggu pembayaran',QA_PENDING:'Pemeriksaan pesanan',QA_APPROVED:'Lolos pemeriksaan',DELIVERED:'Akses terkirim',QA_REJECTED:'Tidak dapat dipenuhi',REFUND_PENDING:'Refund diproses',REFUNDED:'Refund selesai',CANCELLED:'Dibatalkan'};return labels[status]||status;}
 function updateMode(){var active=catalog.some(function(p){return Number(p.is_active)===1;});var mode=document.getElementById('mode');if(mode)mode.textContent=active&&paymentsReady?'TOKO AKTIF':'PREVIEW';}
+function simpleIconSlug(product){
+ var text=(String(product.id||'')+' '+String(product.name||'')).toLowerCase();
+ var brands=[
+  [/netflix/,'netflix'],[/spotify/,'spotify'],[/youtube music/,'youtubemusic'],[/youtube/,'youtube'],[/crunchyroll/,'crunchyroll'],[/disney/,'disneyplus'],[/apple music/,'applemusic'],[/apple tv/,'appletv'],[/prime video|amazon prime/,'primevideo'],[/bilibili/,'bilibili'],[/iqiyi/,'iqiyi'],[/viu/,'viu'],[/wetv/,'wetv'],[/vidio/,'vidio'],[/deezer/,'deezer'],[/joox/,'joox'],[/soundcloud/,'soundcloud'],[/tidal/,'tidal'],[/canva/,'canva']
+ ];
+ for(var i=0;i<brands.length;i++)if(brands[i][0].test(text))return brands[i][1];
+ return 'simpleicons';
+}
 function productArt(product,large){
- var asset=String(product.hero_asset||'').trim();
- if(/^\d{2}-hero\.svg$/.test(asset)) return '<div class="asset-art '+(large?'asset-art-large':'')+'"><img src="/assets/products/'+asset+'" alt="'+escapeHtml(product.name)+'" loading="lazy" decoding="async"></div>';
- var id=String(product.id||'').toLowerCase(),name=String(product.name||'').toLowerCase();
- var kind=id.indexOf('netflix')>=0||name.indexOf('netflix')>=0?'netflix':id.indexOf('spotify')>=0||name.indexOf('spotify')>=0?'spotify':id.indexOf('youtube')>=0||name.indexOf('youtube')>=0?'youtube':id.indexOf('disney')>=0||name.indexOf('disney')>=0?'disney':'canva';
- var art={netflix:'__NETFLIX__',youtube:'__YOUTUBE__',spotify:'__SPOTIFY__',disney:'__DISNEY__',canva:'__CANVA__'}[kind];
- return '<div class="asset-art '+(large?'asset-art-large':'')+'"><img src="data:image/svg+xml;base64,'+art+'" alt="'+escapeHtml(product.name)+'" loading="lazy"></div>';
+ var slug=simpleIconSlug(product),label=escapeHtml(product.name);
+ return '<div class="asset-art brand-art '+(large?'brand-art-large':'')+'"><img src="https://cdn.simpleicons.org/'+slug+'" alt="'+label+'" width="'+(large?'65':'48')+'" height="'+(large?'65':'48')+'" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src=\'https://cdn.simpleicons.org/simpleicons\'"><span>'+label+'</span></div>';
 }
 function openProductDetail(productId){
  var product=catalog.find(function(item){return String(item.id)===String(productId);});
@@ -646,7 +650,21 @@ function openProductDetail(productId){
  var buy=document.getElementById('productDetailBuy');if(buy)buy.addEventListener('click',function(){closeProductDetail();checkout(product.id);});
 }
 function closeProductDetail(){var modal=document.getElementById('productModal');if(!modal)return;modal.classList.remove('is-open');modal.setAttribute('aria-hidden','true');document.body.classList.remove('modal-open');}
-function renderProducts(){if(!box)return;if(!catalog.length){if(box&&box.getAttribute('data-ssr')!=='1')box.innerHTML='<article class="card"><div class="desc">Katalog belum tersedia.</div></article>';updateMode();return;}box.removeAttribute('data-ssr');box.innerHTML=catalog.map(function(p){return '<article class="card product-card" role="button" tabindex="0" data-product-id="'+escapeHtml(p.id)+'" aria-label="Lihat detail '+escapeHtml(p.name)+'">'+productArt(p,false)+'<div class="cardtop"><div class="productmeta"><div class="name">'+escapeHtml(p.name)+'</div><div class="period">'+escapeHtml(p.category)+' · '+escapeHtml(p.period_label)+'</div></div></div><span class="warranty">'+warrantyLabel(p)+'</span><p class="desc">'+escapeHtml(p.description)+'</p><div class="cardfoot"><div class="price">'+stars(p.price_stars)+'</div><span class="detail-hint">Lihat detail ↗</span></div></article>';}).join('');updateMode();}
+function categoryKey(value){var key=String(value||'').toLowerCase();return key.indexOf('musik')>=0||key.indexOf('music')>=0?'music':'streaming';}
+function setCategory(category){currentCategory=category||'all';Array.prototype.slice.call(document.querySelectorAll('[data-category-filter]')).forEach(function(button){button.classList.toggle('active',button.getAttribute('data-category-filter')===currentCategory);});renderProducts();}
+function renderFeaturedProducts(){
+ if(!featuredBox)return;
+ if(!catalog.length){featuredBox.innerHTML='<article class="featured-item"><span class="featured-copy"><strong>Produk belum tersedia</strong><small>Katalog sedang diperbarui</small></span></article>';return;}
+ featuredBox.innerHTML=catalog.slice(0,4).map(function(p){var slug=simpleIconSlug(p);return '<button class="featured-item" type="button" data-featured-product="'+escapeHtml(p.id)+'"><span class="featured-logo"><img src="https://cdn.simpleicons.org/'+slug+'" alt="" width="32" height="32" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=\'https://cdn.simpleicons.org/simpleicons\'"></span><span class="featured-copy"><strong>'+escapeHtml(p.name)+'</strong><small>'+escapeHtml(p.category||'Digital Premium')+' · '+stars(p.price_stars)+'</small></span></button>';}).join('');
+}
+function renderProducts(){
+ if(!box)return;
+ if(!catalog.length){if(box.getAttribute('data-ssr')!=='1')box.innerHTML='<article class="card"><div class="desc">Katalog belum tersedia.</div></article>';renderFeaturedProducts();updateMode();return;}
+ box.removeAttribute('data-ssr');
+ var visible=currentCategory==='all'?catalog:catalog.filter(function(p){return categoryKey(p.category)===currentCategory;});
+ box.innerHTML=visible.length?visible.map(function(p){return '<article class="card product-card" role="button" tabindex="0" data-product-id="'+escapeHtml(p.id)+'" aria-label="Lihat detail '+escapeHtml(p.name)+'">'+productArt(p,false)+'<div class="cardtop"><div class="productmeta"><div class="name">'+escapeHtml(p.name)+'</div><div class="period">'+escapeHtml(p.category)+' · '+escapeHtml(p.period_label)+'</div></div></div><span class="warranty">'+warrantyLabel(p)+'</span><p class="desc">'+escapeHtml(p.description)+'</p><div class="cardfoot"><div class="price">'+stars(p.price_stars)+'</div><span class="detail-hint">Lihat detail ↗</span></div></article>';}).join(''):'<article class="card"><div class="desc">Belum ada produk aktif pada kategori ini.</div></article>';
+ renderFeaturedProducts();updateMode();
+}
 if(box){box.addEventListener('click',function(event){var card=event.target.closest('.product-card');if(card&&box.contains(card))openProductDetail(card.getAttribute('data-product-id'));});box.addEventListener('keydown',function(event){var card=event.target.closest('.product-card');if(card&&box.contains(card)&&(event.key==='Enter'||event.key===' ')){event.preventDefault();openProductDetail(card.getAttribute('data-product-id'));}});}
 var closeDetail=document.getElementById('closeProductModal'),detailBackdrop=document.querySelector('[data-close-product]');if(closeDetail)closeDetail.addEventListener('click',closeProductDetail);if(detailBackdrop)detailBackdrop.addEventListener('click',closeProductDetail);document.addEventListener('keydown',function(event){if(event.key==='Escape')closeProductDetail();});
 function loadProducts(){
@@ -656,8 +674,8 @@ function loadProducts(){
 }
 function connectTelegram(){
  var api=window.Telegram&&window.Telegram.WebApp?window.Telegram.WebApp:null;if(!api)return false;
- tg=api;initData=api.initData||'';
- try{api.ready();if(typeof api.expand==='function')api.expand();if(typeof api.setHeaderColor==='function')api.setHeaderColor('#15548a');if(typeof api.setBackgroundColor==='function')api.setBackgroundColor('#071321');if(typeof api.setBottomBarColor==='function')api.setBottomBarColor('#091827');}catch(error){}
+ tg=api;initData=api.initData||'';var tgUser=api.initDataUnsafe&&api.initDataUnsafe.user;var greeting=document.getElementById('greetingName');if(greeting&&tgUser&&tgUser.first_name)greeting.textContent=tgUser.first_name;
+ try{api.ready();if(typeof api.expand==='function')api.expand();if(typeof api.setHeaderColor==='function')api.setHeaderColor('#241044');if(typeof api.setBackgroundColor==='function')api.setBackgroundColor('#080713');if(typeof api.setBottomBarColor==='function')api.setBottomBarColor('#0c0a1b');}catch(error){}
  renderProducts();loadOrders();return true;
 }
 function resumeInvoice(orderId,invoiceLink){
@@ -713,6 +731,11 @@ if(sendSupport)sendSupport.addEventListener('click',submitSupport);
 var chat=document.getElementById('chatBot');if(chat)chat.addEventListener('click',function(){if(tg&&typeof tg.openTelegramLink==='function')tg.openTelegramLink('https://t.me/JktStarsStores_bot');else window.open('https://t.me/JktStarsStores_bot','_blank','noopener');});
 function showPage(pageId){var pages=Array.prototype.slice.call(document.querySelectorAll('.app-page'));var found=pages.some(function(page){return page.id===pageId;});if(!found)return;pages.forEach(function(page){page.classList.toggle('is-active',page.id===pageId);});navItems.forEach(function(item){item.classList.toggle('active',item.getAttribute('data-target')===pageId);});window.scrollTo({top:0,behavior:'auto'});if(pageId==='ordersPanel')loadOrders();}
 navItems.forEach(function(item){item.addEventListener('click',function(){showPage(item.getAttribute('data-target'));});});
+Array.prototype.slice.call(document.querySelectorAll('[data-category-select]')).forEach(function(button){button.addEventListener('click',function(){setCategory(button.getAttribute('data-category-select'));showPage('catalogPanel');});});
+Array.prototype.slice.call(document.querySelectorAll('[data-category-filter]')).forEach(function(button){button.addEventListener('click',function(){setCategory(button.getAttribute('data-category-filter'));});});
+var openCatalog=document.querySelector('[data-open-catalog]');if(openCatalog)openCatalog.addEventListener('click',function(){setCategory('all');showPage('catalogPanel');});
+if(featuredBox)featuredBox.addEventListener('click',function(event){var item=event.target.closest('[data-featured-product]');if(item)openProductDetail(item.getAttribute('data-featured-product'));});
+var requestedPage=new URLSearchParams(window.location.search).get('page');if(requestedPage==='catalog'){setCategory('all');showPage('catalogPanel');}else if(requestedPage==='orders'){showPage('ordersPanel');}
 initHeroCarousel();rotateLiveInfo();window.setInterval(rotateLiveInfo,5000);loadProducts();loadOrders();
 var sdk=document.createElement('script');sdk.src='https://telegram.org/js/telegram-web-app.js';sdk.async=true;sdk.onload=function(){connectTelegram();};sdk.onerror=function(){var mode=document.getElementById('mode');if(mode)mode.textContent='KATALOG AKTIF';};document.head.appendChild(sdk);
 })();</script></body></html>`;
@@ -721,9 +744,13 @@ function escapePageHtml(value) {
   return String(value == null ? "" : value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#39;");
 }
 function productArtPage(p) {
- const asset=String(p.hero_asset||"").trim();
- if(/^\d{2}-hero\.svg$/.test(asset)) return '<div class="product-art"><img src="/assets/products/'+asset+'" alt="'+escapePageHtml(p.name)+'" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover"></div>';
- const id=String(p.id||"").toLowerCase(),name=String(p.name||"").toLowerCase();const kind=id.includes("netflix")||name.includes("netflix")?"netflix":id.includes("spotify")||name.includes("spotify")?"spotify":id.includes("youtube")||name.includes("youtube")?"youtube":id.includes("disney")||name.includes("disney")?"disney":"canva";const brand={netflix:["N","NETFLIX"],spotify:["◉","Spotify"],youtube:["▶","YouTube"],disney:["✦","Disney+"],canva:["C","Canva"]}[kind];return '<div class="product-art art-'+kind+'"><span class="product-art-mark">'+brand[0]+'</span><span class="product-art-word">'+brand[1]+'</span><span class="product-art-tag">PREMIUM DIGITAL ACCESS</span></div>';
+ const text=(String(p.id||"")+" "+String(p.name||"")).toLowerCase();
+ const brands=[
+  [/netflix/,"netflix"],[/spotify/,"spotify"],[/youtube music/,"youtubemusic"],[/youtube/,"youtube"],[/crunchyroll/,"crunchyroll"],[/disney/,"disneyplus"],[/apple music/,"applemusic"],[/apple tv/,"appletv"],[/prime video|amazon prime/,"primevideo"],[/bilibili/,"bilibili"],[/iqiyi/,"iqiyi"],[/viu/,"viu"],[/wetv/,"wetv"],[/vidio/,"vidio"],[/deezer/,"deezer"],[/joox/,"joox"],[/soundcloud/,"soundcloud"],[/tidal/,"tidal"],[/canva/,"canva"]
+ ];
+ let slug="simpleicons";
+ for(const [pattern,value] of brands){if(pattern.test(text)){slug=value;break;}}
+ return '<div class="product-art brand-art"><img src="https://cdn.simpleicons.org/'+slug+'" alt="'+escapePageHtml(p.name)+'" width="48" height="48" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src=&#39;https://cdn.simpleicons.org/simpleicons&#39;" style="width:48px;height:48px;object-fit:contain"><span>'+escapePageHtml(p.name)+'</span></div>';
 }
 async function renderHomePage(env) { let page=PAGE;try{const result=await env.DB.prepare("SELECT id,name,period_label,description,icon,price_stars,is_active,category,hero_asset FROM products WHERE is_active=1 AND delivery_mode='manual' ORDER BY name").all();const rows=result.results||[];const cards=rows.map(function(p){const description=String(p.description||""),warranty=description.toLowerCase().includes("garansi 30 hari")?"GARANSI 30 HARI":"GARANSI SESUAI KETENTUAN";return '<article class="card product-card" role="button" tabindex="0" data-product-id="'+escapePageHtml(p.id)+'" aria-label="Lihat detail '+escapePageHtml(p.name)+'">'+productArtPage(p)+'<div class="cardtop"><div class="productmeta"><div class="name">'+escapePageHtml(p.name)+'</div><div class="period">'+escapePageHtml(p.category)+' · '+escapePageHtml(p.period_label)+'</div></div></div><span class="warranty">'+warranty+'</span><p class="desc">'+escapePageHtml(description)+'</p><div class="cardfoot"><div class="price">'+String(Number(p.price_stars)||0)+' XTR</div><span class="detail-hint">Lihat detail ↗</span></div></article>';}).join("");const empty='<article class="card"><div class="desc">Katalog belum tersedia.</div></article>';const target='<section class="grid" id="products"><article class="card"><div class="desc">Memuat katalog...</div></article></section>';page=page.replace(target,'<section class="grid" id="products" data-ssr="1">'+(cards||empty)+'</section>');}catch(error){console.error("homepage_catalog_render_failed",String(error&&error.message||error).slice(0,300));}return html(page);}
 export default {
