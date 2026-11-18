@@ -631,7 +631,7 @@ function updateMode(){var active=catalog.some(function(p){return Number(p.is_act
 function simpleIconSlug(product){
  var text=(String(product.id||'')+' '+String(product.name||'')).toLowerCase();
  var brands=[
-  [/netflix/,'netflix'],[/spotify/,'spotify'],[/youtube music/,'youtubemusic'],[/youtube/,'youtube'],[/crunchyroll/,'crunchyroll'],[/disney/,'disneyplus'],[/apple music/,'applemusic'],[/apple tv/,'appletv'],[/prime video|amazon prime/,'primevideo'],[/bilibili/,'bilibili'],[/iqiyi/,'iqiyi'],[/viu/,'viu'],[/wetv/,'wetv'],[/vidio/,'vidio'],[/deezer/,'deezer'],[/joox/,'joox'],[/soundcloud/,'soundcloud'],[/tidal/,'tidal'],[/canva/,'canva']
+  [/netflix/,'netflix'],[/spotify/,'spotify'],[/crunchyroll/,'crunchyroll'],[/youtube music/,'youtubemusic'],[/youtube/,'youtube'],[/apple music/,'applemusic'],[/apple tv/,'appletv'],[/bilibili/,'bilibili'],[/hbo|max/,'hbomax'],[/deezer/,'deezer'],[/soundcloud/,'soundcloud'],[/tidal/,'tidal']
  ];
  for(var i=0;i<brands.length;i++)if(brands[i][0].test(text))return brands[i][1];
  return 'simpleicons';
@@ -746,7 +746,7 @@ function escapePageHtml(value) {
 function productArtPage(p) {
  const text=(String(p.id||"")+" "+String(p.name||"")).toLowerCase();
  const brands=[
-  [/netflix/,"netflix"],[/spotify/,"spotify"],[/youtube music/,"youtubemusic"],[/youtube/,"youtube"],[/crunchyroll/,"crunchyroll"],[/disney/,"disneyplus"],[/apple music/,"applemusic"],[/apple tv/,"appletv"],[/prime video|amazon prime/,"primevideo"],[/bilibili/,"bilibili"],[/iqiyi/,"iqiyi"],[/viu/,"viu"],[/wetv/,"wetv"],[/vidio/,"vidio"],[/deezer/,"deezer"],[/joox/,"joox"],[/soundcloud/,"soundcloud"],[/tidal/,"tidal"],[/canva/,"canva"]
+  [/netflix/,"netflix"],[/spotify/,"spotify"],[/crunchyroll/,"crunchyroll"],[/youtube music/,"youtubemusic"],[/youtube/,"youtube"],[/apple music/,"applemusic"],[/apple tv/,"appletv"],[/bilibili/,"bilibili"],[/hbo|max/,"hbomax"],[/deezer/,"deezer"],[/soundcloud/,"soundcloud"],[/tidal/,"tidal"]
  ];
  let slug="simpleicons";
  for(const [pattern,value] of brands){if(pattern.test(text)){slug=value;break;}}
