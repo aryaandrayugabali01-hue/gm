@@ -194,10 +194,23 @@ async function processWebhookUpdate(update, env, origin) {
     const isAdminPrivate = !!msg.chat && msg.chat.type === "private" && userId === String(env.ADMIN_TELEGRAM_ID || "");
     if (command === "/start") {
       if (!origin) throw new Error("WEBHOOK_ORIGIN_UNAVAILABLE");
+      try {
+        await tg(env, "setChatMenuButton", {
+          chat_id: msg.chat.id,
+          menu_button: { type: "web_app", text: "Buka App", web_app: { url: origin } }
+        });
+      } catch (menuError) {
+        console.warn("chat_menu_button_setup_failed", String(menuError && menuError.message || menuError).slice(0, 180));
+      }
       await tg(env, "sendMessage", {
         chat_id: msg.chat.id,
-        text: "✨ JKT STARS STORES\n\nKatalog khusus layanan Streaming dan Musik. Pembayaran menggunakan Telegram Stars (XTR).\n\nPilih BUKA KATALOG untuk melihat gambar, detail, dan harga produk. Setelah pembayaran terkonfirmasi, pesanan diperiksa admin dan akses dikirim secara manual.",
-        reply_markup: { inline_keyboard: [[{ text: "🏪 BUKA KATALOG", web_app: { url: origin } }], [{ text: "⭐ INFO PEMBAYARAN", callback_data: "payment_info" }, { text: "📜 SYARAT & KETENTUAN", callback_data: "terms" }], [{ text: "🆘 BANTUAN PESANAN", callback_data: "support" }]] }
+        text: "🌟 JKT STARS STORES\n\nToko digital khusus layanan Streaming dan Music.\nBelanja praktis menggunakan Telegram Stars (XTR).\n\n✅ Katalog produk dan detail harga\n✅ Pembayaran langsung melalui Telegram\n✅ Pemeriksaan pesanan dan pengiriman manual oleh admin\n\nTekan tombol di bawah untuk mulai berbelanja.",
+        reply_markup: { inline_keyboard: [
+          [{ text: "🚀 BUKA MINI APP", web_app: { url: origin } }],
+          [{ text: "📦 KATALOG PRODUK", callback_data: "catalog" }, { text: "🧾 PESANAN SAYA", callback_data: "orders" }],
+          [{ text: "⭐ INFO STARS", callback_data: "payment_info" }, { text: "🆘 BANTUAN", callback_data: "support" }],
+          [{ text: "📜 SYARAT & KETENTUAN", callback_data: "terms" }, { text: "ℹ️ TENTANG", callback_data: "about" }]
+        ] }
       });
     } else if (command === "/stars") {
       const catalog = await env.DB.prepare("SELECT name,period_label,price_stars,is_active FROM products WHERE is_active=1 AND delivery_mode='manual' ORDER BY name").all();
@@ -404,12 +417,26 @@ async function processWebhookUpdate(update, env, origin) {
       await tg(env,"sendMessage",{chat_id:msg.chat.id,text:"✅ Pesan bantuan Anda sudah dicatat. Ticket ID: "+ticketId});
     }
   }
-  if (update.callback_query && ["support","terms","payment_info"].includes(update.callback_query.data)) {
+  if (update.callback_query && ["support","terms","payment_info","catalog","orders","about"].includes(update.callback_query.data)) {
     const callback = update.callback_query;
     try { await tg(env,"answerCallbackQuery",{callback_query_id:callback.id}); }
     catch (error) { console.warn("callback_ack_failed",{id:callback.id,message:String(error && error.message || error).slice(0,180)}); }
-    const responseText = callback.data === "terms" ? TERMS_MESSAGE : callback.data === "payment_info" ? "⭐ PEMBAYARAN TELEGRAM STARS\n\nPembayaran dilakukan langsung melalui Telegram Stars (XTR). Harga mengikuti detail pada katalog. Setelah Telegram mengonfirmasi pembayaran, pesanan masuk pemeriksaan kualitas dan akses dikirim oleh admin secara manual.\n\nBuka katalog melalui tombol BUKA KATALOG pada /start." : "Bantuan: kirim Order ID dan kendala yang Anda alami. Pesan Anda akan dibuat menjadi tiket bantuan."; 
-    await tg(env,"sendMessage",{chat_id:callback.message && callback.message.chat ? callback.message.chat.id : callback.from.id,text:responseText});
+    const opensApp = callback.data === "catalog" || callback.data === "orders";
+    const route = callback.data === "orders" ? "orders" : "catalog";
+    const responseText = callback.data === "terms" ? TERMS_MESSAGE
+      : callback.data === "payment_info" ? "⭐ PEMBAYARAN TELEGRAM STARS\n\nPembayaran dilakukan langsung melalui Telegram Stars (XTR). Harga mengikuti detail pada katalog. Setelah Telegram mengonfirmasi pembayaran, pesanan masuk pemeriksaan kualitas dan akses dikirim oleh admin secara manual."
+      : callback.data === "about" ? "🌟 JKT STARS STORES\n\nToko digital untuk layanan Streaming dan Music. Pembayaran menggunakan Telegram Stars (XTR), sedangkan pemeriksaan pesanan dan pengiriman akses dilakukan secara manual oleh admin."
+      : callback.data === "catalog" ? "📦 Katalog produk tersedia di Mini App. Pilih kategori Streaming atau Music untuk melihat layanan yang tersedia."
+      : callback.data === "orders" ? "🧾 Riwayat dan status pesanan Anda tersedia di menu Pesanan dalam Mini App."
+      : "🆘 Bantuan: kirim Order ID dan kendala yang Anda alami. Pesan Anda akan dicatat sebagai tiket bantuan.";
+    await tg(env,"sendMessage",{
+      chat_id:callback.message && callback.message.chat ? callback.message.chat.id : callback.from.id,
+      text:responseText,
+      ...(opensApp ? { reply_markup:{ inline_keyboard:[[{
+        text:callback.data === "orders" ? "🧾 BUKA PESANAN SAYA" : "📦 BUKA KATALOG",
+        web_app:{ url:origin + "?page=" + route }
+      }]] } } : {})
+    });
   }
   return new Response("OK");
 }
