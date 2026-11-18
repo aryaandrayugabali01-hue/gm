@@ -674,6 +674,44 @@ main{max-width:640px;padding:12px 12px calc(100px + env(safe-area-inset-bottom))
  .category-tile{min-height:120px;padding:10px!important}.category-logos{gap:5px}.category-logos img{width:21px;height:21px}
  .category-copy strong{font-size:13px}.featured-item{padding:8px!important}
 }
+
+/* Catalog prices and product detail modal refresh */
+.price-stack{display:flex;flex-direction:column;gap:2px;min-width:0}
+.price-idr{font-size:12px;font-weight:850;line-height:1.25;color:#f1d7ff;letter-spacing:.1px}
+.price-stars{font-size:10px;font-weight:750;color:#aeb9da;line-height:1.25}
+.product-card .cardfoot{align-items:flex-end}
+.detail-hint{font-size:8px;flex-shrink:0}
+.product-modal{align-items:center;padding:16px 12px calc(16px + env(safe-area-inset-bottom))}
+.product-dialog{max-width:500px;max-height:min(88vh,820px);padding:18px;border-color:#985be0;background:linear-gradient(155deg,#21113d 0%,#11102c 58%,#0a0b20 100%);box-shadow:0 24px 70px #000b,0 0 0 1px #7d45b533 inset}
+.product-modal-close{position:sticky;float:right;top:0;margin:-5px -5px 2px 10px;background:#21143c;color:#f3dfff;border-color:#9c68cf77}
+.detail-hero-art{clear:both;aspect-ratio:16/7;max-height:190px;margin:0 0 15px;border:1px solid #a05de477;border-radius:16px;overflow:hidden;background:#0c0b22;box-shadow:0 9px 25px #0006}
+.detail-hero-art img{display:block;width:100%;height:100%;object-fit:cover}
+.detail-product-heading{position:relative}
+.detail-brand-row{justify-content:flex-start;margin:0 0 10px}
+.detail-brand-row .product-logo{border-color:#9d63db;background:linear-gradient(145deg,#381466,#111837)}
+.detail-kicker,.detail-section-label{font-size:9px;letter-spacing:1.5px;color:#d69dff;font-weight:900}
+.detail-name{font:700 clamp(24px,6vw,31px)/1.12 Georgia,serif;color:#f7e8bd;margin:6px 42px 5px 0;overflow-wrap:anywhere}
+.detail-period{font-size:12px;color:#c5b9db}
+.detail-description{font-size:14px;line-height:1.7;color:#d5cce8;margin:17px 0}
+.detail-benefit-art{margin:13px 0 17px;border-color:#8f54c666;background:#0b0b20}
+.detail-instructions{display:grid;grid-template-columns:1fr;gap:9px;margin:14px 0}
+.detail-instruction{padding:12px 13px;border:1px solid #8a5ab14d;border-radius:13px;background:linear-gradient(145deg,#21143c,#15152f)}
+.detail-instruction p{margin:6px 0 0;font-size:12px;line-height:1.6;color:#d1c7e5}
+.detail-facts{margin:14px 0;gap:9px}
+.detail-fact{padding:12px;border-color:#9876b333;background:#ffffff08}
+.detail-fact small{font-size:9px;letter-spacing:.4px}
+.detail-fact strong{font-size:12px;color:#dfb5ff;line-height:1.5}
+.detail-manual{font-size:11px;line-height:1.6;color:#bcb1d3;margin:13px 0}
+.detail-price-card{margin:16px 0 12px;padding:15px;border:1px solid #9a5bdc99;border-radius:16px;background:linear-gradient(125deg,#271349,#17163b 64%,#10244a);text-align:center}
+.detail-price-caption{font-size:9px;letter-spacing:1.7px;font-weight:850;color:#c9a0f0}
+.detail-price-idr{font-size:clamp(20px,5vw,25px);font-weight:900;color:#fff;margin-top:5px}
+.detail-price-xtr{font-size:23px;font-weight:900;color:#e3c3ff;margin-top:2px}
+.detail-price-note{font-size:10px;color:#aaa4c6;margin-top:4px}
+.detail-buy{min-height:52px;font-size:14px;font-weight:850;border-radius:14px}
+.checkout-legal{font-size:12px;line-height:1.6;color:#bcb4d1;text-align:center;margin:13px 0 2px}
+.checkout-legal summary{color:#e3baff;font-weight:800;text-decoration:underline;text-underline-offset:3px}
+.checkout-legal .terms-inline{border-color:#8f60c866;background:#130f2b;color:#d8cee9}
+@media(max-width:380px){.product-dialog{padding:15px}.detail-name{font-size:24px}.detail-price-card{padding:13px}.detail-description{font-size:13px}.price-idr{font-size:11px}.price-stars{font-size:9px}}
 </style>
 </head>
 <body><main>
@@ -746,7 +784,9 @@ var tg=null,initData='',box=document.getElementById('products'),featuredBox=docu
 var liveInfoItems=['Pembayaran menggunakan Telegram Stars (XTR).','Harga produk ditampilkan sebelum Anda membayar.','Pesanan diproses setelah pembayaran dikonfirmasi Telegram.','Pengiriman akses dilakukan secara manual oleh admin.','Periksa perkembangan transaksi melalui menu Pesanan.'];var liveInfoIndex=0;function rotateLiveInfo(){var text=document.getElementById('liveInfoText'),count=document.getElementById('liveInfoCount');if(text)text.textContent=liveInfoItems[liveInfoIndex];if(count)count.textContent=(liveInfoIndex+1)+' / '+liveInfoItems.length;liveInfoIndex=(liveInfoIndex+1)%liveInfoItems.length;}
 function toast(message){var el=document.getElementById('toast');if(!el)return;el.textContent=message;el.classList.add('show');if(toastTimer)clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('show');},4200);}
 function escapeHtml(value){return String(value==null?'':value).replace(/[&<>]/g,function(c){return c==='&'?'&amp;':c==='<'?'&lt;':'&gt;';}).replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
-function stars(value){var n=Number(value);return Number.isFinite(n)&&n>0?String(n)+' XTR':'Harga belum ditetapkan';}
+function stars(value){var n=Number(value);return Number.isSafeInteger(n)&&n>0?String(n)+' XTR':'Harga belum ditetapkan';}
+function rupiah(value){var n=Number(value);return Number.isFinite(n)&&n>0?'Rp '+new Intl.NumberFormat('id-ID',{maximumFractionDigits:0}).format(n):'Harga rupiah belum tersedia';}
+function rupiahPrice(product){var min=Number(product.price_min_idr),max=Number(product.price_max_idr);if(min>0&&max>0&&min!==max)return rupiah(min)+' – '+rupiah(max);return rupiah(min||max);}
 function warrantyLabel(product){var d=String(product.description||'').toLowerCase();return d.indexOf('garansi 30 hari')!==-1?'GARANSI 30 HARI':'GARANSI SESUAI KETENTUAN';}
 function statusLabel(status){var labels={PENDING_PAYMENT:'Menunggu pembayaran',QA_PENDING:'Pemeriksaan pesanan',QA_APPROVED:'Lolos pemeriksaan',DELIVERED:'Akses terkirim',QA_REJECTED:'Tidak dapat dipenuhi',REFUND_PENDING:'Refund diproses',REFUNDED:'Refund selesai',CANCELLED:'Dibatalkan'};return labels[status]||status;}
 function updateMode(){var active=catalog.some(function(p){return Number(p.is_active)===1;});var mode=document.getElementById('mode');if(mode)mode.textContent=active&&paymentsReady?'TOKO AKTIF':'PREVIEW';}
@@ -770,8 +810,14 @@ function openProductDetail(productId){
  if(!product){toast('Detail produk belum tersedia.');return;}
  var content=document.getElementById('productDetailContent'),modal=document.getElementById('productModal');if(!content||!modal)return;
  var warranty=warrantyLabel(product),active=Number(product.is_active)===1,hasPrice=Number.isSafeInteger(Number(product.price_stars))&&Number(product.price_stars)>0,canPay=active&&hasPrice&&paymentsReady&&!!(tg&&initData);
- content.innerHTML='<div class="detail-brand-row">'+productArt(product,true)+'</div>'+(String(product.benefit_asset||"").match(/^\d{2}-benefit\.svg$/)?'<div class="detail-benefit-art"><img src="/assets/products/'+product.benefit_asset+'" alt="Informasi manfaat '+escapeHtml(product.name)+'" loading="lazy" decoding="async"></div>':"")+'<div class="detail-kicker">DETAIL PRODUK</div><h2 class="detail-name" id="productDetailName">'+escapeHtml(product.name)+'</h2><div class="detail-period">Masa akses: '+escapeHtml(product.period_label||'-')+'</div><p class="detail-description">'+escapeHtml(product.description||'Informasi produk belum tersedia.')+'</p><div class="detail-facts"><div class="detail-fact"><small>GARANSI</small><strong>'+escapeHtml(warranty)+'</strong></div><div class="detail-fact"><small>PEMENUHAN</small><strong>Manual</strong></div></div><p class="detail-manual">Akses diproses secara manual setelah pembayaran Telegram Stars terkonfirmasi. Detail akses dikirim melalui chat bot.</p><button class="buy detail-buy" type="button" id="productDetailBuy" '+(canPay?'':'disabled')+'>'+(canPay?'Bayar Sekarang':(!active?'Produk tidak aktif':(!hasPrice?'Harga belum ditetapkan':(!paymentsReady?'Pembayaran tidak tersedia':'Buka melalui Telegram untuk Membeli'))))+'</button><div class="detail-price-under">'+stars(product.price_stars)+'</div><div class="checkout-legal">Dengan menekan Bayar, Anda menyetujui <details><summary>Syarat &amp; Ketentuan</summary><div class="terms-inline"><p>1. Pesanan diproses setelah pembayaran Telegram terkonfirmasi dan masuk pemeriksaan sebelum akses dikirim.</p><p>2. Jangan membagikan detail login atau akses akun kepada pihak lain.</p><p>3. Klaim garansi diajukan melalui Bantuan Pesanan dengan Order ID dan penjelasan kendala.</p><p>4. Harga dan masa akses mengikuti keterangan produk saat dipesan.</p><p>5. Bantuan dan refund ditinjau sesuai kondisi pesanan serta ketentuan Telegram. Untuk kendala pembayaran, hubungi bot layanan.</p></div></details>.</div>';
+ var hero=String(product.hero_asset||''),benefit=String(product.benefit_asset||'');
+ var heroMarkup=/^\d{2}-hero\.svg$/.test(hero)?'<div class="detail-hero-art"><img src="/assets/products/'+hero+'" alt="Ilustrasi '+escapeHtml(product.name)+'" loading="eager" decoding="async"></div>':'';
+ var benefitMarkup=/^\d{2}-benefit\.svg$/.test(benefit)?'<div class="detail-benefit-art"><img src="/assets/products/'+benefit+'" alt="Informasi paket '+escapeHtml(product.name)+'" loading="lazy" decoding="async"></div>':'';
+ var delivery=String(product.delivery_method||'').trim(),guide=String(product.activation_guide||'').trim();
+ var instructions=(delivery?'<section class="detail-instruction"><div class="detail-section-label">CARA PENGIRIMAN</div><p>'+escapeHtml(delivery)+'</p></section>':'')+(guide?'<section class="detail-instruction"><div class="detail-section-label">PANDUAN AKTIVASI</div><p>'+escapeHtml(guide)+'</p></section>':'');
+ content.innerHTML=heroMarkup+'<div class="detail-product-heading"><div class="detail-brand-row">'+productArt(product,true)+'</div><div class="detail-kicker">DETAIL PRODUK</div><h2 class="detail-name" id="productDetailName">'+escapeHtml(product.name)+'</h2><div class="detail-period">Masa akses: '+escapeHtml(product.period_label||'-')+'</div></div>'+benefitMarkup+'<p class="detail-description">'+escapeHtml(product.description||'Informasi produk belum tersedia.')+'</p>'+(instructions?'<div class="detail-instructions">'+instructions+'</div>':'')+'<div class="detail-facts"><div class="detail-fact"><small>GARANSI</small><strong>'+escapeHtml(warranty)+'</strong></div><div class="detail-fact"><small>PEMENUHAN</small><strong>Manual oleh admin</strong></div></div><p class="detail-manual">Pesanan diproses setelah pembayaran Telegram Stars terkonfirmasi. Admin memeriksa pesanan dan mengirim detail akses melalui chat bot.</p><div class="detail-price-card"><div class="detail-price-caption">HARGA KATALOG</div><div class="detail-price-idr">'+escapeHtml(rupiahPrice(product))+'</div><div class="detail-price-xtr">'+stars(product.price_stars)+'</div><div class="detail-price-note">Nominal XTR ini digunakan pada invoice Telegram.</div></div><button class="buy detail-buy" type="button" id="productDetailBuy" '+(canPay?'':'disabled')+'>'+(canPay?'Bayar Sekarang':(!active?'Produk tidak aktif':(!hasPrice?'Harga belum ditetapkan':(!paymentsReady?'Pembayaran tidak tersedia':'Buka melalui Telegram untuk Membeli'))))+'</button><div class="checkout-legal">Dengan menekan Bayar, Anda menyetujui <details><summary>Syarat &amp; Ketentuan</summary><div class="terms-inline"><p>1. Pesanan diproses setelah pembayaran Telegram terkonfirmasi dan masuk pemeriksaan sebelum akses dikirim.</p><p>2. Jangan membagikan detail login atau akses akun kepada pihak lain.</p><p>3. Klaim garansi diajukan melalui Bantuan Pesanan dengan Order ID dan penjelasan kendala.</p><p>4. Harga dan masa akses mengikuti keterangan produk saat dipesan.</p><p>5. Bantuan dan refund ditinjau sesuai kondisi pesanan serta ketentuan Telegram. Untuk kendala pembayaran, hubungi bot layanan.</p></div></details>.</div>';
  modal.setAttribute('aria-hidden','false');modal.classList.add('is-open');document.body.classList.add('modal-open');
+ var dialog=modal.querySelector('.product-dialog');if(dialog)dialog.scrollTop=0;
  var buy=document.getElementById('productDetailBuy');if(buy)buy.addEventListener('click',function(){closeProductDetail();checkout(product.id);});
 }
 function closeProductDetail(){var modal=document.getElementById('productModal');if(!modal)return;modal.classList.remove('is-open');modal.setAttribute('aria-hidden','true');document.body.classList.remove('modal-open');}
@@ -788,7 +834,7 @@ function renderFeaturedProducts(){
   var slug=simpleIconSlug(p),logo=slug
    ? '<img src="https://cdn.simpleicons.org/'+slug+'" alt="" width="32" height="32" loading="lazy" decoding="async" referrerpolicy="no-referrer">'
    : '<span class="generic-brand-icon" aria-hidden="true">✦</span>';
-  return '<button class="featured-item" type="button" data-featured-product="'+escapeHtml(p.id)+'"><span class="featured-logo">'+logo+'</span><span class="featured-copy"><strong>'+escapeHtml(p.name)+'</strong><small>'+escapeHtml(p.category||'Digital Premium')+' · '+stars(p.price_stars)+'</small></span></button>';
+  return '<button class="featured-item" type="button" data-featured-product="'+escapeHtml(p.id)+'"><span class="featured-logo">'+logo+'</span><span class="featured-copy"><strong>'+escapeHtml(p.name)+'</strong><small>'+escapeHtml(p.category||'Digital Premium')+' · '+escapeHtml(rupiahPrice(p))+' · '+stars(p.price_stars)+'</small></span></button>';
  }).join('');
 }
 function renderProducts(){
@@ -797,7 +843,7 @@ function renderProducts(){
  box.removeAttribute('data-ssr');
  var visible=currentCategory==='all'?catalog:catalog.filter(function(p){return categoryKey(p.category)===currentCategory;});
  box.innerHTML=visible.length?visible.map(function(p){
-  return '<article class="card product-card" role="button" tabindex="0" data-product-id="'+escapeHtml(p.id)+'" aria-label="Lihat detail '+escapeHtml(p.name)+'"><div class="cardtop">'+productArt(p,false)+'<div class="productmeta"><div class="name">'+escapeHtml(p.name)+'</div><div class="period">'+escapeHtml(p.category)+' · '+escapeHtml(p.period_label)+'</div></div></div><span class="warranty">'+warrantyLabel(p)+'</span><p class="desc">'+escapeHtml(p.description)+'</p><div class="cardfoot"><div class="price">'+stars(p.price_stars)+'</div><span class="detail-hint">Lihat detail ↗</span></div></article>';
+  return '<article class="card product-card" role="button" tabindex="0" data-product-id="'+escapeHtml(p.id)+'" aria-label="Lihat detail '+escapeHtml(p.name)+'"><div class="cardtop">'+productArt(p,false)+'<div class="productmeta"><div class="name">'+escapeHtml(p.name)+'</div><div class="period">'+escapeHtml(p.category)+' · '+escapeHtml(p.period_label)+'</div></div></div><span class="warranty">'+warrantyLabel(p)+'</span><p class="desc">'+escapeHtml(p.description)+'</p><div class="cardfoot"><div class="price-stack"><div class="price-idr">'+escapeHtml(rupiahPrice(p))+'</div><div class="price-stars">'+stars(p.price_stars)+'</div></div><span class="detail-hint">Lihat detail ↗</span></div></article>';
  }).join(''):'<article class="card"><div class="desc">Belum ada produk aktif pada kategori ini.</div></article>';
  renderFeaturedProducts();updateMode();
 }
@@ -900,13 +946,16 @@ async function renderHomePage(env) {
  let page=PAGE;
  let activeCount=0;
  try {
-  const result=await env.DB.prepare("SELECT id,name,period_label,description,icon,price_stars,is_active,category,hero_asset FROM products WHERE is_active=1 AND delivery_mode='manual' ORDER BY name").all();
+  const result=await env.DB.prepare("SELECT id,name,period_label,description,icon,price_stars,price_min_idr,price_max_idr,is_active,category,hero_asset FROM products WHERE is_active=1 AND delivery_mode='manual' ORDER BY name").all();
   const rows=result.results||[];
   activeCount=rows.length;
   const cards=rows.map(function(p){
    const description=String(p.description||"");
    const warranty=description.toLowerCase().includes("garansi 30 hari")?"GARANSI 30 HARI":"GARANSI SESUAI KETENTUAN";
-   return '<article class="card product-card" role="button" tabindex="0" data-product-id="'+escapePageHtml(p.id)+'" aria-label="Lihat detail '+escapePageHtml(p.name)+'"><div class="cardtop">'+productArtPage(p)+'<div class="productmeta"><div class="name">'+escapePageHtml(p.name)+'</div><div class="period">'+escapePageHtml(p.category)+' · '+escapePageHtml(p.period_label)+'</div></div></div><span class="warranty">'+warranty+'</span><p class="desc">'+escapePageHtml(description)+'</p><div class="cardfoot"><div class="price">'+String(Number(p.price_stars)||0)+' XTR</div><span class="detail-hint">Lihat detail ↗</span></div></article>';
+   const min=Number(p.price_min_idr),max=Number(p.price_max_idr);
+   const money=value=>"Rp "+Number(value).toLocaleString("id-ID");
+   const idr=min>0?(max>0&&max!==min?money(min)+" – "+money(max):money(min)):"Harga rupiah belum tersedia";
+   return '<article class="card product-card" role="button" tabindex="0" data-product-id="'+escapePageHtml(p.id)+'" aria-label="Lihat detail '+escapePageHtml(p.name)+'"><div class="cardtop">'+productArtPage(p)+'<div class="productmeta"><div class="name">'+escapePageHtml(p.name)+'</div><div class="period">'+escapePageHtml(p.category)+' · '+escapePageHtml(p.period_label)+'</div></div></div><span class="warranty">'+warranty+'</span><p class="desc">'+escapePageHtml(description)+'</p><div class="cardfoot"><div class="price-stack"><div class="price-idr">'+escapePageHtml(idr)+'</div><div class="price-stars">'+String(Number(p.price_stars)||0)+' XTR</div></div><span class="detail-hint">Lihat detail ↗</span></div></article>';
   }).join("");
   const empty='<article class="card"><div class="desc">Katalog belum tersedia.</div></article>';
   const target='<section class="grid" id="products"><article class="card"><div class="desc">Memuat katalog...</div></section>';
@@ -979,7 +1028,7 @@ export default {
         });
       }
       if (url.pathname === "/api/products" && request.method === "GET") {
-        const rows = await env.DB.prepare("SELECT id,slug,name,period_label,description,icon,price_stars,is_active,catalog_no,category,hero_asset,benefit_asset FROM products WHERE is_active=1 AND delivery_mode='manual' ORDER BY name").all();
+        const rows = await env.DB.prepare("SELECT id,slug,name,period_label,description,icon,price_stars,price_min_idr,price_max_idr,delivery_method,activation_guide,data_completeness,is_active,catalog_no,category,hero_asset,benefit_asset FROM products WHERE is_active=1 AND delivery_mode='manual' ORDER BY name").all();
         const active = await env.DB.prepare("SELECT COUNT(*) AS total FROM products WHERE is_active=1 AND delivery_mode='manual'").first();
         const hasCatalog = Number(active && active.total || 0) > 0;
         const paymentsReady = hasCatalog && await telegramPaymentsReady(env, url.origin);
