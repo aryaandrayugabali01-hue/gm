@@ -558,6 +558,13 @@ body{background:radial-gradient(ellipse at 88% -8%,#3b1769 0,transparent 42%),ra
 .featured-logo{width:43px;height:43px;flex:0 0 43px;border-radius:12px;background:#0a1025;display:grid;place-items:center;padding:9px}.featured-logo img{width:100%;height:100%;object-fit:contain}.featured-copy{min-width:0}
 .featured-copy strong{display:block;font-size:10px;line-height:1.25;overflow-wrap:anywhere}.featured-copy small{display:block;color:#b5a8d4;font-size:8px;margin-top:4px}
 .brand-art{display:flex;align-items:center;justify-content:center;flex-direction:row;gap:10px;padding:13px;background:radial-gradient(circle at 50% 20%,#472080,#10152f 75%);border:1px solid #8151bd55}.brand-art img{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 3px 12px #0009)}.brand-art.brand-art-large img{width:65px;height:65px}.brand-art span{font-size:11px;font-weight:850;letter-spacing:.3px}
+.generic-brand-icon{display:grid;place-items:center;width:48px;height:48px;border-radius:12px;background:linear-gradient(145deg,#54208a,#172d68);color:#e9c7ff;font-size:29px;line-height:1;flex:0 0 48px}
+.brand-art-large .generic-brand-icon{width:65px;height:65px;flex-basis:65px;font-size:36px}
+.featured-logo .generic-brand-icon{width:32px;height:32px;flex-basis:32px;font-size:20px;border-radius:9px}
+.account-profile{margin:10px 0 15px;padding:14px;border-color:#8450b8;background:linear-gradient(135deg,#21143d,#111a38)}
+.account-profile strong{display:block;color:#f2ddff;font-size:15px;margin:5px 2px 4px}
+.account-profile .panel-heading{margin:0 0 8px}.account-profile .panel-heading h2{font-size:16px}
+.account-profile p{margin:0}
 .catalog-page-title{margin:5px 2px 14px}.catalog-page-title h2{margin:0 0 4px;color:#fff;font-size:24px}.catalog-page-title p{margin:0;color:#b9afd2;font-size:10px}
 .category-filters{display:flex;gap:7px;overflow-x:auto;padding:2px 1px 12px;scrollbar-width:none}.category-filters::-webkit-scrollbar{display:none}
 .category-filter{flex:0 0 auto;border:1px solid #64448e;border-radius:99px;background:#17132c;color:#c4b8df;padding:8px 12px;font-size:10px;font-weight:800;cursor:pointer}.category-filter.active{background:linear-gradient(120deg,#8f2ee0,#3056e7);border-color:#b67aff;color:#fff}
@@ -591,7 +598,12 @@ body{background:radial-gradient(ellipse at 88% -8%,#3b1769 0,transparent 42%),ra
  <section class="orderlist" id="orders"><p class="empty">Buka toko melalui Telegram untuk melihat pesanan Anda.</p></section>
 </section>
 <section class="app-page support-page" id="accountPanel">
- <div class="panel-heading page-title"><div><h2>Pusat Bantuan</h2><span>Syarat, ketentuan, dan dukungan pesanan</span></div></div>
+ <div class="panel-heading page-title"><div><h2>Akun</h2><span>Profil Telegram, bantuan, dan informasi toko</span></div></div>
+ <section class="notice account-profile">
+  <div class="panel-heading"><div><h2>Profil Telegram</h2><span>Terhubung melalui Telegram</span></div><span class="welcome-pill">AKTIF</span></div>
+  <strong id="accountName">Akun Telegram Anda</strong>
+  <p class="empty">Pesanan dan bantuan dikelola melalui akun Telegram yang sedang digunakan.</p>
+ </section>
  <section class="notice termsbox help-terms">
   <label><input type="checkbox" id="termsAgree"> Saya telah membaca dan menyetujui <b>Syarat &amp; Ketentuan</b>.</label>
   <details><summary>Lihat Syarat &amp; Ketentuan</summary>
@@ -634,11 +646,13 @@ function simpleIconSlug(product){
   [/netflix/,'netflix'],[/spotify/,'spotify'],[/crunchyroll/,'crunchyroll'],[/youtube music/,'youtubemusic'],[/youtube/,'youtube'],[/apple music/,'applemusic'],[/apple tv/,'appletv'],[/bilibili/,'bilibili'],[/hbo|max/,'hbomax'],[/deezer/,'deezer'],[/soundcloud/,'soundcloud'],[/tidal/,'tidal']
  ];
  for(var i=0;i<brands.length;i++)if(brands[i][0].test(text))return brands[i][1];
- return 'simpleicons';
+ return null;
 }
 function productArt(product,large){
- var slug=simpleIconSlug(product),label=escapeHtml(product.name);
- return '<div class="asset-art brand-art '+(large?'brand-art-large':'')+'"><img src="https://cdn.simpleicons.org/'+slug+'" alt="'+label+'" width="'+(large?'65':'48')+'" height="'+(large?'65':'48')+'" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src=\'https://cdn.simpleicons.org/simpleicons\'"><span>'+label+'</span></div>';
+ var slug=simpleIconSlug(product),label=escapeHtml(product.name),logo=slug
+  ? '<img src="https://cdn.simpleicons.org/'+slug+'" alt="'+label+'" width="'+(large?'65':'48')+'" height="'+(large?'65':'48')+'" loading="lazy" decoding="async" referrerpolicy="no-referrer">'
+  : '<span class="generic-brand-icon" aria-hidden="true">✦</span>';
+ return '<div class="asset-art brand-art '+(large?'brand-art-large':'')+'">'+logo+'<span>'+label+'</span></div>';
 }
 function openProductDetail(productId){
  var product=catalog.find(function(item){return String(item.id)===String(productId);});
@@ -655,7 +669,16 @@ function setCategory(category){currentCategory=category||'all';Array.prototype.s
 function renderFeaturedProducts(){
  if(!featuredBox)return;
  if(!catalog.length){featuredBox.innerHTML='<article class="featured-item"><span class="featured-copy"><strong>Produk belum tersedia</strong><small>Katalog sedang diperbarui</small></span></article>';return;}
- featuredBox.innerHTML=catalog.slice(0,4).map(function(p){var slug=simpleIconSlug(p);return '<button class="featured-item" type="button" data-featured-product="'+escapeHtml(p.id)+'"><span class="featured-logo"><img src="https://cdn.simpleicons.org/'+slug+'" alt="" width="32" height="32" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=\'https://cdn.simpleicons.org/simpleicons\'"></span><span class="featured-copy"><strong>'+escapeHtml(p.name)+'</strong><small>'+escapeHtml(p.category||'Digital Premium')+' · '+stars(p.price_stars)+'</small></span></button>';}).join('');
+ var preferred=['netflix','spotify','hbomax','youtube','applemusic','crunchyroll'];
+ var selected=[];
+ preferred.forEach(function(slug){var item=catalog.find(function(p){return simpleIconSlug(p)===slug&&selected.indexOf(p)===-1;});if(item)selected.push(item);});
+ catalog.forEach(function(p){if(selected.length<4&&selected.indexOf(p)===-1)selected.push(p);});
+ featuredBox.innerHTML=selected.slice(0,4).map(function(p){
+  var slug=simpleIconSlug(p),logo=slug
+   ? '<img src="https://cdn.simpleicons.org/'+slug+'" alt="" width="32" height="32" loading="lazy" decoding="async" referrerpolicy="no-referrer">'
+   : '<span class="generic-brand-icon" aria-hidden="true">✦</span>';
+  return '<button class="featured-item" type="button" data-featured-product="'+escapeHtml(p.id)+'"><span class="featured-logo">'+logo+'</span><span class="featured-copy"><strong>'+escapeHtml(p.name)+'</strong><small>'+escapeHtml(p.category||'Digital Premium')+' · '+stars(p.price_stars)+'</small></span></button>';
+ }).join('');
 }
 function renderProducts(){
  if(!box)return;
@@ -674,7 +697,7 @@ function loadProducts(){
 }
 function connectTelegram(){
  var api=window.Telegram&&window.Telegram.WebApp?window.Telegram.WebApp:null;if(!api)return false;
- tg=api;initData=api.initData||'';var tgUser=api.initDataUnsafe&&api.initDataUnsafe.user;var greeting=document.getElementById('greetingName');if(greeting&&tgUser&&tgUser.first_name)greeting.textContent=tgUser.first_name;
+ tg=api;initData=api.initData||'';var tgUser=api.initDataUnsafe&&api.initDataUnsafe.user;var greeting=document.getElementById('greetingName'),accountName=document.getElementById('accountName');if(greeting&&tgUser&&tgUser.first_name)greeting.textContent=tgUser.first_name;if(accountName&&tgUser&&tgUser.first_name)accountName.textContent=tgUser.first_name+(tgUser.last_name?' '+tgUser.last_name:'');
  try{api.ready();if(typeof api.expand==='function')api.expand();if(typeof api.setHeaderColor==='function')api.setHeaderColor('#241044');if(typeof api.setBackgroundColor==='function')api.setBackgroundColor('#080713');if(typeof api.setBottomBarColor==='function')api.setBottomBarColor('#0c0a1b');}catch(error){}
  renderProducts();loadOrders();return true;
 }
@@ -748,9 +771,12 @@ function productArtPage(p) {
  const brands=[
   [/netflix/,"netflix"],[/spotify/,"spotify"],[/crunchyroll/,"crunchyroll"],[/youtube music/,"youtubemusic"],[/youtube/,"youtube"],[/apple music/,"applemusic"],[/apple tv/,"appletv"],[/bilibili/,"bilibili"],[/hbo|max/,"hbomax"],[/deezer/,"deezer"],[/soundcloud/,"soundcloud"],[/tidal/,"tidal"]
  ];
- let slug="simpleicons";
+ let slug=null;
  for(const [pattern,value] of brands){if(pattern.test(text)){slug=value;break;}}
- return '<div class="product-art brand-art"><img src="https://cdn.simpleicons.org/'+slug+'" alt="'+escapePageHtml(p.name)+'" width="48" height="48" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src=&#39;https://cdn.simpleicons.org/simpleicons&#39;" style="width:48px;height:48px;object-fit:contain"><span>'+escapePageHtml(p.name)+'</span></div>';
+ const logo=slug
+  ? '<img src="https://cdn.simpleicons.org/'+slug+'" alt="'+escapePageHtml(p.name)+'" width="48" height="48" loading="lazy" decoding="async" referrerpolicy="no-referrer" style="width:48px;height:48px;object-fit:contain">'
+  : '<span class="generic-brand-icon" aria-hidden="true">✦</span>';
+ return '<div class="product-art brand-art">'+logo+'<span>'+escapePageHtml(p.name)+'</span></div>';
 }
 async function renderHomePage(env) { let page=PAGE;try{const result=await env.DB.prepare("SELECT id,name,period_label,description,icon,price_stars,is_active,category,hero_asset FROM products WHERE is_active=1 AND delivery_mode='manual' ORDER BY name").all();const rows=result.results||[];const cards=rows.map(function(p){const description=String(p.description||""),warranty=description.toLowerCase().includes("garansi 30 hari")?"GARANSI 30 HARI":"GARANSI SESUAI KETENTUAN";return '<article class="card product-card" role="button" tabindex="0" data-product-id="'+escapePageHtml(p.id)+'" aria-label="Lihat detail '+escapePageHtml(p.name)+'">'+productArtPage(p)+'<div class="cardtop"><div class="productmeta"><div class="name">'+escapePageHtml(p.name)+'</div><div class="period">'+escapePageHtml(p.category)+' · '+escapePageHtml(p.period_label)+'</div></div></div><span class="warranty">'+warranty+'</span><p class="desc">'+escapePageHtml(description)+'</p><div class="cardfoot"><div class="price">'+String(Number(p.price_stars)||0)+' XTR</div><span class="detail-hint">Lihat detail ↗</span></div></article>';}).join("");const empty='<article class="card"><div class="desc">Katalog belum tersedia.</div></article>';const target='<section class="grid" id="products"><article class="card"><div class="desc">Memuat katalog...</div></article></section>';page=page.replace(target,'<section class="grid" id="products" data-ssr="1">'+(cards||empty)+'</section>');}catch(error){console.error("homepage_catalog_render_failed",String(error&&error.message||error).slice(0,300));}return html(page);}
 export default {
