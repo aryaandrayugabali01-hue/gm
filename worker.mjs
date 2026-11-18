@@ -569,23 +569,108 @@ body{background:radial-gradient(ellipse at 88% -8%,#3b1769 0,transparent 42%),ra
 .category-filters{display:flex;gap:7px;overflow-x:auto;padding:2px 1px 12px;scrollbar-width:none}.category-filters::-webkit-scrollbar{display:none}
 .category-filter{flex:0 0 auto;border:1px solid #64448e;border-radius:99px;background:#17132c;color:#c4b8df;padding:8px 12px;font-size:10px;font-weight:800;cursor:pointer}.category-filter.active{background:linear-gradient(120deg,#8f2ee0,#3056e7);border-color:#b67aff;color:#fff}
 .bottomnav{grid-template-columns:repeat(4,minmax(0,1fr))}@media(max-width:380px){.welcome-line h2{font-size:19px}.welcome-pill{font-size:7px;padding:6px 7px}.category-tile{padding:10px;min-height:82px}.featured-item{padding:8px}.featured-logo{width:38px;height:38px;flex-basis:38px}}
+
+/* Final reference match: dark premium violet + electric blue */
+:root{color-scheme:dark;--gold:#c28aff;--gold2:#e4c4ff;--ink:#f7f3ff;--muted:#b7acd0;--line:rgba(165,112,255,.32)}
+body{background:radial-gradient(ellipse at 88% -8%,#4b1b80 0,transparent 39%),radial-gradient(ellipse at 8% 28%,#102d68 0,transparent 40%),linear-gradient(180deg,#080713 0%,#100a21 58%,#080713 100%);color:#f7f3ff}
+main{max-width:640px;padding:12px 12px calc(100px + env(safe-area-inset-bottom))}
+.brand-emblem{background:linear-gradient(145deg,#9a35eb,#2454dd)!important;border:1px solid #d9b5ff9c!important;box-shadow:0 0 22px #842fe766!important}
+.brand-copy .eyebrow,.eyebrow{color:#d8a6ff!important}
+.hero h1{color:#fff!important}
+.live-status{color:#d9c5ff!important;border-color:#9361d9!important;background:#8634d428!important}
+.hero-stage{height:258px!important;border:1px solid #884ee5!important;background:radial-gradient(ellipse at 50% 78%,#6f29bf 0,#28134f 46%,#090d23 84%)!important;box-shadow:0 16px 36px #0009,0 0 24px #7428c24d!important}
+.hero-stage:before{background:radial-gradient(ellipse at 50% 18%,#bd77ff39 0,transparent 48%),linear-gradient(180deg,#07142b00 54%,#5723a5a8 100%)!important}
+.hero-stage:after{background:linear-gradient(180deg,transparent,#4b25a96b)!important}
+.hero-slide:before{border-color:#bc83ff25!important;box-shadow:0 0 0 18px #a04bff0b,0 0 0 38px #2f71ff0a!important}
+.hero-fan-card{border-color:#a977ef9c!important;box-shadow:0 10px 26px #0009,inset 0 0 22px #ffffff12!important}
+.fan-netflix{background:linear-gradient(145deg,#4a102d,#14102e 72%)!important;color:#ff526d!important}
+.fan-spotify{background:linear-gradient(145deg,#12553e,#101b38)!important;color:#50e99a!important}
+.fan-youtube{background:linear-gradient(145deg,#263a87,#17112f)!important;color:#ff5b79!important}
+.fan-disney{background:linear-gradient(145deg,#243f9a,#12102e 72%)!important;color:#c7baff!important}
+.hero-main-card{left:10%!important;right:10%!important;top:8%!important;bottom:8%!important;min-height:0!important;border:1px solid #c08aff!important;background:linear-gradient(145deg,#34106cf2,#10163ff7 66%,#1d236bf2)!important;box-shadow:0 14px 32px #000a,inset 0 1px 0 #ffffff35,0 4px 0 #2867e9!important;padding:10px 9px!important}
+.hero-main-card:before{border-color:#d9b5ff55!important}
+.hero-crown{color:#e6c5ff!important;text-shadow:0 3px 16px #8d35e5a8!important}
+.hero-main-card .hero-kicker{color:#d8a6ff!important}
+.hero-main-card h2{color:#fff!important;text-shadow:0 2px 14px #000a!important}
+.hero-main-card p{color:#e8defe!important}
+.hero-benefits span{border-color:#bd88ff78!important;background:#9b46f52b!important;color:#f0dcff!important}
+.hero-cta-button{position:relative;z-index:2;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:29px;margin-top:9px;padding:7px 14px;border:1px solid #d8b6ff;border-radius:999px;background:linear-gradient(110deg,#b62de8,#6139ef 58%,#168cf5);color:#fff;font-size:9px;font-weight:950;letter-spacing:.7px;box-shadow:0 5px 17px #5d2dca75;cursor:pointer}
+.hero-cta-button span{font-size:13px;line-height:1}
+.hero-controls{height:31px!important}
+.hero-arrow{border-color:#9e72da!important;background:#261447!important;color:#ead6ff!important}
+.hero-dot{background:#75658f!important}.hero-dot.is-active{background:#cf8cff!important}.hero-count{color:#d6c4ef!important}
+.live-info{border-color:#8052bd!important;background:linear-gradient(110deg,#170d2c,#28134d)!important;box-shadow:0 6px 20px #0007!important;margin:13px 0 17px!important;min-height:54px!important;padding:11px 13px!important}
+.live-info-label,.catalog-eyebrow{color:#d7a6ff!important}.live-info-text{color:#eee4ff!important}.live-info-count{color:#cdb9eb!important}
+.welcome-line{margin:12px 2px 15px!important}.welcome-line h2{color:#fff!important}.welcome-line p{color:#c3b5dd!important}
+.welcome-pill{border-color:#a86be5!important;background:#792ac62a!important;color:#ead5ff!important}
+.sectionhead h2,.panel-heading h2,.page-title h2{color:#fff!important}.catalog-heading h2{color:#fff!important}
+.catalog-trust{border-color:#9c65da!important;background:#842ece24!important;color:#e8d3ff!important}
+.category-section,.popular-section{margin:16px 0 19px!important}
+.category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.category-tile{position:relative;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:10px;min-height:128px;padding:13px!important;border:1px solid #8750ca!important;border-radius:17px!important;background:linear-gradient(145deg,#3c126f 0%,#1a174e 64%,#101e50 100%)!important;color:#fff!important;text-align:left;box-shadow:0 10px 24px #0007,inset 0 1px 0 #ffffff15!important;overflow:hidden}
+.category-tile:after{content:"";position:absolute;width:100px;height:100px;right:-34px;top:-42px;border:1px solid #c393ff25;border-radius:50%;box-shadow:0 0 0 14px #bb7aff0b,0 0 0 28px #bb7aff08;pointer-events:none}
+.category-tile:nth-child(2){background:linear-gradient(145deg,#21176e 0%,#1a1b58 63%,#0d2d67 100%)!important;border-color:#5267d7!important}
+.category-tile:active{transform:scale(.985)}
+.category-logos{display:flex;align-items:center;gap:7px;min-height:30px}
+.category-logos img{display:block;width:24px;height:24px;object-fit:contain;filter:drop-shadow(0 2px 6px #0008)}
+.category-copy{display:block;max-width:88%;position:relative;z-index:1}
+.category-copy strong{display:block;color:#fff;font-size:14px;font-weight:900;letter-spacing:.1px}
+.category-copy small{display:block;color:#d0c1ed;font-size:9px;margin-top:4px}
+.category-arrow{position:absolute;right:13px;bottom:13px;color:#e3c7ff;font-size:19px;font-weight:900}
+.section-link{color:#d2a8ff!important}
+.featured-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.featured-item{border-color:#69499d!important;background:linear-gradient(145deg,#21143d,#111a3d)!important;box-shadow:0 8px 20px #0006,inset 0 1px 0 #ffffff0d!important}
+.featured-logo{background:#0b1029!important;border:1px solid #65459e55}
+.featured-copy strong{color:#f8f2ff!important}.featured-copy small{color:#c0b1dc!important}
+.card,.orderitem{border-color:#69499b!important;background:linear-gradient(145deg,#211637,#111a3b)!important}
+.card.product-card{box-shadow:0 8px 22px #0007!important}
+.asset-art{background:#130d2a!important;border-color:#8152c36b!important}
+.brand-art{background:radial-gradient(circle at 50% 20%,#45217b,#10152f 75%)!important;border-color:#8959c56b!important}
+.brand-art img{width:52px!important;height:52px!important;max-width:52px!important;max-height:52px!important;object-fit:contain!important;filter:drop-shadow(0 3px 12px #0009)}
+.brand-art span{color:#f2e7ff!important;font-size:10px!important;font-weight:850!important;letter-spacing:.15px!important}
+.generic-brand-icon{background:linear-gradient(145deg,#6d2eaa,#1e428e)!important;color:#f1dfff!important}
+.warranty{border-color:#9a66ce88!important;background:#8a38cf28!important;color:#e7d1ff!important}
+.price,.detail-price-under{color:#e4c4ff!important}
+.buy{background:linear-gradient(110deg,#b62de8,#633af0 58%,#168cf5)!important;color:#fff!important;box-shadow:0 7px 19px #672fe866!important}
+.buy:disabled{background:#514b68!important;color:#d5cee4!important;box-shadow:none!important}
+.buy.secondary{background:#24183e!important;color:#e8d5ff!important;border:1px solid #805ab0!important}
+.navitem{color:#c5b8dc!important}.navitem.active{color:#fff!important;background:linear-gradient(135deg,#9129df,#3155e6)!important;box-shadow:0 4px 16px #6c28c65c!important}
+.bottomnav{grid-template-columns:repeat(4,minmax(0,1fr))!important;background:#0c091bee!important;border-top:1px solid #8b54bb66!important}
+.toast{background:#21143c!important;border-color:#8956bf!important;color:#f4e5ff!important}
+.product-dialog{border-color:#9a5dd2!important;background:linear-gradient(155deg,#241345,#0b1027 78%)!important}
+.detail-fact{background:#ffffff09!important;border-color:#ffffff20!important}
+.detail-fact strong,.detail-kicker,.checkout-legal summary{color:#e1b6ff!important}
+.detail-manual,.detail-period,.detail-description{color:#cbbde4!important}
+.detail-benefit-art{border-color:#8959c56b!important;background:#130d2a!important}
+.termsbox label{color:#e9d9ff!important}.termsbox input{accent-color:#a64bed!important}.termsbox summary{color:#d8a6ff!important}
+.account-profile{border-color:#8450b8!important;background:linear-gradient(135deg,#21143d,#111a38)!important}
+.catalog-page-title h2{color:#fff!important}.category-filter{border-color:#69499b!important;background:#17132d!important;color:#cabce3!important}
+.category-filter.active{background:linear-gradient(120deg,#8f2ee0,#3056e7)!important;border-color:#bd87ff!important;color:#fff!important}
+@media(max-width:380px){
+ .hero-stage{height:246px!important}.hero-main-card{left:7%!important;right:7%!important;top:6%!important;bottom:6%!important;padding:8px 7px!important}
+ .hero-crown{font-size:26px!important}.hero-main-card h2{font-size:17px!important}.hero-main-card p{font-size:9px!important;margin-bottom:7px!important}
+ .hero-benefits{gap:4px!important}.hero-benefits span{font-size:6px!important;padding:4px 5px!important}
+ .hero-cta-button{min-height:26px;margin-top:7px;font-size:8px;padding:6px 11px}
+ .category-tile{min-height:120px;padding:10px!important}.category-logos{gap:5px}.category-logos img{width:21px;height:21px}
+ .category-copy strong{font-size:13px}.featured-item{padding:8px!important}
+}
 </style>
 </head>
 <body><main>
 <div class="app-page is-active" id="homePage">
 <section class="hero" id="home">
  <div class="herohead"><div class="brand-lockup"><div class="brand-emblem" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 4l4 5h-8z" fill="#f4d77f"/><path d="M20 10h8l-2 5v19h-4V15z" fill="#f4d77f"/><path d="M16 34h16l4 5H12z" fill="#d5a94f"/><path d="M8 23l4 3 2-5 3 4 3-3 4 4 4-4 3 3 3-4 2 5 4-3-2 11H10z" fill="none" stroke="#f4d77f" stroke-width="1.5"/><path d="M24 2l1 2 2 .3-1.5 1.5.4 2.2L24 7l-1.9 1 .4-2.2L21 4.3l2-.3z" fill="#fff0ac"/></svg></div><div class="brand-copy"><div class="eyebrow">JAKARTA · TELEGRAM STARS</div><h1>JKT Stars Stores</h1><p>Toko digital dengan pembayaran Telegram Stars</p></div></div><span class="live-status" id="mode">KATALOG AKTIF</span></div>
- <div class="hero-carousel" id="heroCarousel" aria-label="Banner Premium Digital Store"><div class="hero-stage"><article class="hero-slide is-active" data-hero-slide="0" aria-hidden="false"><div class="hero-fan" aria-hidden="true"><div class="hero-fan-card fan-netflix"><b>N</b><span>NETFLIX</span></div><div class="hero-fan-card fan-spotify"><b>◉</b><span>Spotify</span></div><div class="hero-fan-card fan-youtube"><b>▶</b><span>YouTube</span></div><div class="hero-fan-card fan-disney"><b>✦</b><span>Disney+</span></div></div><div class="hero-main-card"><div class="hero-crown" aria-hidden="true">♛</div><span class="hero-kicker">PREMIUM DIGITAL ACCESS</span><h2>JKT Stars Stores</h2><p>Streaming &amp; Music Premium melalui Telegram Stars</p><div class="hero-benefits"><span>✦ Pembayaran XTR</span><span>⚡ Pemenuhan Manual</span><span>✓ Bantuan Admin</span></div></div></article>
-<article class="hero-slide " data-hero-slide="1" aria-hidden="true"><div class="hero-fan" aria-hidden="true"><div class="hero-fan-card fan-netflix"><b>N</b><span>NETFLIX</span></div><div class="hero-fan-card fan-spotify"><b>◉</b><span>Spotify</span></div><div class="hero-fan-card fan-youtube"><b>▶</b><span>YouTube</span></div><div class="hero-fan-card fan-disney"><b>✦</b><span>Disney+</span></div></div><div class="hero-main-card"><div class="hero-crown" aria-hidden="true">♛</div><span class="hero-kicker">STREAMING · ENTERTAINMENT</span><h2>Hiburan Premium</h2><p>Pilihan streaming untuk menemani waktu terbaik Anda.</p><div class="hero-benefits"><span>▣ Pilihan Streaming</span><span>✦ Paket Digital</span><span>✓ Detail Transparan</span></div></div></article>
-<article class="hero-slide " data-hero-slide="2" aria-hidden="true"><div class="hero-fan" aria-hidden="true"><div class="hero-fan-card fan-netflix"><b>N</b><span>NETFLIX</span></div><div class="hero-fan-card fan-spotify"><b>◉</b><span>Spotify</span></div><div class="hero-fan-card fan-youtube"><b>▶</b><span>YouTube</span></div><div class="hero-fan-card fan-disney"><b>✦</b><span>Disney+</span></div></div><div class="hero-main-card"><div class="hero-crown" aria-hidden="true">♛</div><span class="hero-kicker">MUSIC · CREATIVITY</span><h2>Musik &amp; Kreativitas</h2><p>Layanan digital untuk hiburan dan produktivitas harian.</p><div class="hero-benefits"><span>♫ Musik Premium</span><span>✎ Kreativitas</span><span>⚡ Praktis</span></div></div></article>
-<article class="hero-slide " data-hero-slide="3" aria-hidden="true"><div class="hero-fan" aria-hidden="true"><div class="hero-fan-card fan-netflix"><b>N</b><span>NETFLIX</span></div><div class="hero-fan-card fan-spotify"><b>◉</b><span>Spotify</span></div><div class="hero-fan-card fan-youtube"><b>▶</b><span>YouTube</span></div><div class="hero-fan-card fan-disney"><b>✦</b><span>Disney+</span></div></div><div class="hero-main-card"><div class="hero-crown" aria-hidden="true">♛</div><span class="hero-kicker">PILIHAN LAYANAN DIGITAL</span><h2>Temukan Favorit Anda</h2><p>Jelajahi katalog dan lihat detail setiap produk sebelum membeli.</p><div class="hero-benefits"><span>▦ 5 Produk Aktif</span><span>◉ Detail Produk</span><span>✓ Bantuan Admin</span></div></div></article>
-<article class="hero-slide " data-hero-slide="4" aria-hidden="true"><div class="hero-fan" aria-hidden="true"><div class="hero-fan-card fan-netflix"><b>N</b><span>NETFLIX</span></div><div class="hero-fan-card fan-spotify"><b>◉</b><span>Spotify</span></div><div class="hero-fan-card fan-youtube"><b>▶</b><span>YouTube</span></div><div class="hero-fan-card fan-disney"><b>✦</b><span>Disney+</span></div></div><div class="hero-main-card"><div class="hero-crown" aria-hidden="true">♛</div><span class="hero-kicker">ORDER MELALUI TELEGRAM</span><h2>Praktis dengan Stars</h2><p>Pilih layanan, periksa detailnya, lalu lanjutkan melalui Telegram Stars.</p><div class="hero-benefits"><span>★ 250 XTR</span><span>⌁ Checkout Telegram</span><span>✓ Pemenuhan Manual</span></div></div></article></div><div class="hero-controls"><button class="hero-arrow" type="button" data-hero-prev aria-label="Banner sebelumnya">‹</button><div class="hero-dots" aria-label="Pilih banner"><button class="hero-dot is-active" type="button" data-hero-dot="0" aria-label="Banner 1"></button><button class="hero-dot" type="button" data-hero-dot="1" aria-label="Banner 2"></button><button class="hero-dot" type="button" data-hero-dot="2" aria-label="Banner 3"></button><button class="hero-dot" type="button" data-hero-dot="3" aria-label="Banner 4"></button><button class="hero-dot" type="button" data-hero-dot="4" aria-label="Banner 5"></button></div><span class="hero-count" id="heroCount">01 / 05</span><button class="hero-arrow" type="button" data-hero-next aria-label="Banner berikutnya">›</button></div></div>
+ <div class="hero-carousel" id="heroCarousel" aria-label="Banner Premium Digital Store"><div class="hero-stage"><article class="hero-slide is-active" data-hero-slide="0" aria-hidden="false"><div class="hero-fan" aria-hidden="true"><div class="hero-fan-card fan-netflix"><b>N</b><span>NETFLIX</span></div><div class="hero-fan-card fan-spotify"><b>◉</b><span>Spotify</span></div><div class="hero-fan-card fan-youtube"><b>▶</b><span>YouTube</span></div><div class="hero-fan-card fan-disney"><b>✦</b><span>Disney+</span></div></div><div class="hero-main-card"><div class="hero-crown" aria-hidden="true">♛</div><span class="hero-kicker">PREMIUM DIGITAL ACCESS</span><h2>JKT Stars Stores</h2><p>Streaming &amp; Music Premium melalui Telegram Stars</p><div class="hero-benefits"><span>✦ Pembayaran XTR</span><span>⚡ Pemenuhan Manual</span><span>✓ Bantuan Admin</span></div><button class="hero-cta-button" type="button" data-open-catalog>JELAJAHI KATALOG <span>↗</span></button></div></div></article>
+<article class="hero-slide " data-hero-slide="1" aria-hidden="true"><div class="hero-fan" aria-hidden="true"><div class="hero-fan-card fan-netflix"><b>N</b><span>NETFLIX</span></div><div class="hero-fan-card fan-spotify"><b>◉</b><span>Spotify</span></div><div class="hero-fan-card fan-youtube"><b>▶</b><span>YouTube</span></div><div class="hero-fan-card fan-disney"><b>✦</b><span>Disney+</span></div></div><div class="hero-main-card"><div class="hero-crown" aria-hidden="true">♛</div><span class="hero-kicker">STREAMING · ENTERTAINMENT</span><h2>Hiburan Premium</h2><p>Pilihan streaming untuk menemani waktu terbaik Anda.</p><div class="hero-benefits"><span>▣ Pilihan Streaming</span><span>✦ Paket Digital</span><span>✓ Detail Transparan</span></div><button class="hero-cta-button" type="button" data-open-catalog>JELAJAHI KATALOG <span>↗</span></button></div></div></article>
+<article class="hero-slide " data-hero-slide="2" aria-hidden="true"><div class="hero-fan" aria-hidden="true"><div class="hero-fan-card fan-netflix"><b>N</b><span>NETFLIX</span></div><div class="hero-fan-card fan-spotify"><b>◉</b><span>Spotify</span></div><div class="hero-fan-card fan-youtube"><b>▶</b><span>YouTube</span></div><div class="hero-fan-card fan-disney"><b>✦</b><span>Disney+</span></div></div><div class="hero-main-card"><div class="hero-crown" aria-hidden="true">♛</div><span class="hero-kicker">MUSIC · CREATIVITY</span><h2>Musik &amp; Kreativitas</h2><p>Layanan digital untuk hiburan dan produktivitas harian.</p><div class="hero-benefits"><span>♫ Musik Premium</span><span>✎ Kreativitas</span><span>⚡ Praktis</span></div><button class="hero-cta-button" type="button" data-open-catalog>JELAJAHI KATALOG <span>↗</span></button></div></div></article>
+<article class="hero-slide " data-hero-slide="3" aria-hidden="true"><div class="hero-fan" aria-hidden="true"><div class="hero-fan-card fan-netflix"><b>N</b><span>NETFLIX</span></div><div class="hero-fan-card fan-spotify"><b>◉</b><span>Spotify</span></div><div class="hero-fan-card fan-youtube"><b>▶</b><span>YouTube</span></div><div class="hero-fan-card fan-disney"><b>✦</b><span>Disney+</span></div></div><div class="hero-main-card"><div class="hero-crown" aria-hidden="true">♛</div><span class="hero-kicker">PILIHAN LAYANAN DIGITAL</span><h2>Temukan Favorit Anda</h2><p>Jelajahi katalog dan lihat detail setiap produk sebelum membeli.</p><div class="hero-benefits"><span>▦ 5 Produk Aktif</span><span>◉ Detail Produk</span><span>✓ Bantuan Admin</span></div><button class="hero-cta-button" type="button" data-open-catalog>JELAJAHI KATALOG <span>↗</span></button></div></div></article>
+<article class="hero-slide " data-hero-slide="4" aria-hidden="true"><div class="hero-fan" aria-hidden="true"><div class="hero-fan-card fan-netflix"><b>N</b><span>NETFLIX</span></div><div class="hero-fan-card fan-spotify"><b>◉</b><span>Spotify</span></div><div class="hero-fan-card fan-youtube"><b>▶</b><span>YouTube</span></div><div class="hero-fan-card fan-disney"><b>✦</b><span>Disney+</span></div></div><div class="hero-main-card"><div class="hero-crown" aria-hidden="true">♛</div><span class="hero-kicker">ORDER MELALUI TELEGRAM</span><h2>Praktis dengan Stars</h2><p>Pilih layanan, periksa detailnya, lalu lanjutkan melalui Telegram Stars.</p><div class="hero-benefits"><span>★ 250 XTR</span><span>⌁ Checkout Telegram</span><span>✓ Pemenuhan Manual</span></div><button class="hero-cta-button" type="button" data-open-catalog>JELAJAHI KATALOG <span>↗</span></button></div></div></article></div><div class="hero-controls"><button class="hero-arrow" type="button" data-hero-prev aria-label="Banner sebelumnya">‹</button><div class="hero-dots" aria-label="Pilih banner"><button class="hero-dot is-active" type="button" data-hero-dot="0" aria-label="Banner 1"></button><button class="hero-dot" type="button" data-hero-dot="1" aria-label="Banner 2"></button><button class="hero-dot" type="button" data-hero-dot="2" aria-label="Banner 3"></button><button class="hero-dot" type="button" data-hero-dot="3" aria-label="Banner 4"></button><button class="hero-dot" type="button" data-hero-dot="4" aria-label="Banner 5"></button></div><span class="hero-count" id="heroCount">01 / 05</span><button class="hero-arrow" type="button" data-hero-next aria-label="Banner berikutnya">›</button></div></div>
 </section>
 <section class="live-info" aria-live="polite"><span class="live-info-label">INFO TOKO</span><span class="live-info-text" id="liveInfoText">Pembayaran menggunakan Telegram Stars (XTR).</span><span class="live-info-count" id="liveInfoCount">1 / 5</span></section>
 <section class="welcome-line"><div><h2>Hai, <span id="greetingName">Sobat</span> 👋</h2><p>Pilih layanan digital favoritmu</p></div><span class="welcome-pill">JKT STARS STORES</span></section>
 <section class="category-section"><div class="sectionhead"><div><span class="catalog-eyebrow">JELAJAHI LAYANAN</span><h2>Kategori</h2><span>Streaming dan musik premium</span></div></div><div class="category-grid">
-<button class="category-tile" type="button" data-category-select="streaming"><span class="category-emoji">🎬</span><span><strong>Streaming</strong><small>Film, serial &amp; hiburan</small></span></button>
-<button class="category-tile" type="button" data-category-select="music"><span class="category-emoji">🎧</span><span><strong>Music</strong><small>Musik dan audio premium</small></span></button></div></section>
+<button class="category-tile" type="button" data-category-select="streaming"><span class="category-logos" aria-hidden="true"><img src="https://cdn.simpleicons.org/netflix" alt="" loading="lazy"><img src="https://cdn.simpleicons.org/crunchyroll" alt="" loading="lazy"><img src="https://cdn.simpleicons.org/appletv" alt="" loading="lazy"><img src="https://cdn.simpleicons.org/bilibili" alt="" loading="lazy"></span><span class="category-copy"><strong>Streaming</strong><small>Film, serial &amp; hiburan</small></span><span class="category-arrow" aria-hidden="true">↗</span></button>
+<button class="category-tile" type="button" data-category-select="music"><span class="category-logos" aria-hidden="true"><img src="https://cdn.simpleicons.org/spotify" alt="" loading="lazy"><img src="https://cdn.simpleicons.org/youtubemusic" alt="" loading="lazy"><img src="https://cdn.simpleicons.org/applemusic" alt="" loading="lazy"><img src="https://cdn.simpleicons.org/deezer" alt="" loading="lazy"></span><span class="category-copy"><strong>Music</strong><small>Musik dan audio premium</small></span><span class="category-arrow" aria-hidden="true">↗</span></button></div></section>
 <section class="popular-section"><div class="sectionhead catalog-heading"><div><span class="catalog-eyebrow">PILIHAN LAYANAN</span><h2>Produk Pilihan</h2><span>Lihat layanan yang tersedia</span></div><button class="section-link" type="button" data-open-catalog>Lihat Semua →</button></div><div class="featured-grid" id="featuredProducts"><article class="featured-item"><span class="featured-copy"><strong>Memuat produk...</strong></span></article></div></section>
 </div>
 <section class="app-page" id="catalogPanel"><div class="catalog-page-title"><h2>Katalog Produk</h2><p>Pilih layanan Streaming atau Music favoritmu</p></div>
@@ -649,9 +734,14 @@ function simpleIconSlug(product){
  return null;
 }
 function productArt(product,large){
- var slug=simpleIconSlug(product),label=escapeHtml(product.name),logo=slug
-  ? '<img src="https://cdn.simpleicons.org/'+slug+'" alt="'+label+'" width="'+(large?'65':'48')+'" height="'+(large?'65':'48')+'" loading="lazy" decoding="async" referrerpolicy="no-referrer">'
-  : '<span class="generic-brand-icon" aria-hidden="true">✦</span>';
+ var slug=simpleIconSlug(product),label=escapeHtml(product.name),asset=String(product.hero_asset||'').trim(),logo='';
+ if(slug){
+  logo='<img src="https://cdn.simpleicons.org/'+slug+'" alt="'+label+'" width="'+(large?'65':'48')+'" height="'+(large?'65':'48')+'" loading="lazy" decoding="async" referrerpolicy="no-referrer">';
+ }else if(/^\d{2}-hero\.svg$/.test(asset)){
+  logo='<img src="/assets/products/'+asset+'" alt="'+label+'" width="'+(large?'65':'48')+'" height="'+(large?'65':'48')+'" loading="lazy" decoding="async">';
+ }else{
+  logo='<span class="generic-brand-icon" aria-hidden="true">✦</span>';
+ }
  return '<div class="asset-art brand-art '+(large?'brand-art-large':'')+'">'+logo+'<span>'+label+'</span></div>';
 }
 function openProductDetail(productId){
@@ -756,7 +846,7 @@ function showPage(pageId){var pages=Array.prototype.slice.call(document.querySel
 navItems.forEach(function(item){item.addEventListener('click',function(){showPage(item.getAttribute('data-target'));});});
 Array.prototype.slice.call(document.querySelectorAll('[data-category-select]')).forEach(function(button){button.addEventListener('click',function(){setCategory(button.getAttribute('data-category-select'));showPage('catalogPanel');});});
 Array.prototype.slice.call(document.querySelectorAll('[data-category-filter]')).forEach(function(button){button.addEventListener('click',function(){setCategory(button.getAttribute('data-category-filter'));});});
-var openCatalog=document.querySelector('[data-open-catalog]');if(openCatalog)openCatalog.addEventListener('click',function(){setCategory('all');showPage('catalogPanel');});
+Array.prototype.slice.call(document.querySelectorAll('[data-open-catalog]')).forEach(function(button){button.addEventListener('click',function(){setCategory('all');showPage('catalogPanel');});});
 if(featuredBox)featuredBox.addEventListener('click',function(event){var item=event.target.closest('[data-featured-product]');if(item)openProductDetail(item.getAttribute('data-featured-product'));});
 var requestedPage=new URLSearchParams(window.location.search).get('page');if(requestedPage==='catalog'){setCategory('all');showPage('catalogPanel');}else if(requestedPage==='orders'){showPage('ordersPanel');}
 initHeroCarousel();rotateLiveInfo();window.setInterval(rotateLiveInfo,5000);loadProducts();loadOrders();
@@ -773,10 +863,13 @@ function productArtPage(p) {
  ];
  let slug=null;
  for(const [pattern,value] of brands){if(pattern.test(text)){slug=value;break;}}
+ const asset=String(p.hero_asset||"").trim();
  const logo=slug
-  ? '<img src="https://cdn.simpleicons.org/'+slug+'" alt="'+escapePageHtml(p.name)+'" width="48" height="48" loading="lazy" decoding="async" referrerpolicy="no-referrer" style="width:48px;height:48px;object-fit:contain">'
-  : '<span class="generic-brand-icon" aria-hidden="true">✦</span>';
- return '<div class="product-art brand-art">'+logo+'<span>'+escapePageHtml(p.name)+'</span></div>';
+  ? '<img src="https://cdn.simpleicons.org/'+slug+'" alt="'+escapePageHtml(p.name)+'" width="48" height="48" loading="lazy" decoding="async" referrerpolicy="no-referrer">'
+  : /^\d{2}-hero\.svg$/.test(asset)
+    ? '<img src="/assets/products/'+asset+'" alt="'+escapePageHtml(p.name)+'" width="48" height="48" loading="lazy" decoding="async">'
+    : '<span class="generic-brand-icon" aria-hidden="true">✦</span>';
+ return '<div class="asset-art brand-art">'+logo+'<span>'+escapePageHtml(p.name)+'</span></div>';
 }
 async function renderHomePage(env) { let page=PAGE;try{const result=await env.DB.prepare("SELECT id,name,period_label,description,icon,price_stars,is_active,category,hero_asset FROM products WHERE is_active=1 AND delivery_mode='manual' ORDER BY name").all();const rows=result.results||[];const cards=rows.map(function(p){const description=String(p.description||""),warranty=description.toLowerCase().includes("garansi 30 hari")?"GARANSI 30 HARI":"GARANSI SESUAI KETENTUAN";return '<article class="card product-card" role="button" tabindex="0" data-product-id="'+escapePageHtml(p.id)+'" aria-label="Lihat detail '+escapePageHtml(p.name)+'">'+productArtPage(p)+'<div class="cardtop"><div class="productmeta"><div class="name">'+escapePageHtml(p.name)+'</div><div class="period">'+escapePageHtml(p.category)+' · '+escapePageHtml(p.period_label)+'</div></div></div><span class="warranty">'+warranty+'</span><p class="desc">'+escapePageHtml(description)+'</p><div class="cardfoot"><div class="price">'+String(Number(p.price_stars)||0)+' XTR</div><span class="detail-hint">Lihat detail ↗</span></div></article>';}).join("");const empty='<article class="card"><div class="desc">Katalog belum tersedia.</div></article>';const target='<section class="grid" id="products"><article class="card"><div class="desc">Memuat katalog...</div></article></section>';page=page.replace(target,'<section class="grid" id="products" data-ssr="1">'+(cards||empty)+'</section>');}catch(error){console.error("homepage_catalog_render_failed",String(error&&error.message||error).slice(0,300));}return html(page);}
 export default {
